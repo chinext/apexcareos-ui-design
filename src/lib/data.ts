@@ -133,6 +133,77 @@ export const employees = [
   },
 ];
 
+export const medicalRecords = [
+    {
+        id: 'PAT001',
+        name: 'Liam Johnson',
+        age: 28,
+        gender: 'Male',
+        bloodType: 'O+',
+        lastVisit: '2024-05-15',
+        diagnosis: 'Common Cold',
+        doctor: 'Dr. Ava Williams',
+        notes: 'Prescribed rest and fluids. Follow up if symptoms worsen.',
+        vitals: {
+            heartRate: '75 bpm',
+            bloodPressure: '120/80 mmHg',
+            temperature: '98.6°F',
+            respiratoryRate: '16 breaths/min',
+        }
+    },
+    {
+        id: 'PAT002',
+        name: 'Olivia Smith',
+        age: 45,
+        gender: 'Female',
+        bloodType: 'A-',
+        lastVisit: '2024-05-10',
+        diagnosis: 'Migraine',
+        doctor: 'Dr. Sophia Garcia',
+        notes: 'Patient reports severe headaches. Prescribed Sumatriptan. Advised to avoid triggers.',
+        vitals: {
+            heartRate: '82 bpm',
+            bloodPressure: '125/85 mmHg',
+            temperature: '98.7°F',
+            respiratoryRate: '18 breaths/min',
+        }
+    },
+    {
+        id: 'PAT003',
+        name: 'Elijah Jones',
+        age: 62,
+        gender: 'Male',
+        bloodType: 'B+',
+        lastVisit: '2024-05-20',
+        diagnosis: 'Hypertension',
+        doctor: 'Dr. Ava Williams',
+        notes: 'Monitoring blood pressure. Lifestyle modifications discussed. Continue with Lisinopril.',
+        vitals: {
+            heartRate: '68 bpm',
+            bloodPressure: '140/90 mmHg',
+            temperature: '98.5°F',
+            respiratoryRate: '15 breaths/min',
+        }
+    },
+    {
+        id: 'PAT004',
+        name: 'Emma Miller',
+        age: 34,
+        gender: 'Female',
+        bloodType: 'AB+',
+        lastVisit: '2024-04-28',
+        diagnosis: 'Sprained Ankle',
+        doctor: 'Dr. James Davis',
+        notes: 'X-Ray confirmed no fracture. RICE protocol advised. Follow up in 2 weeks.',
+        vitals: {
+            heartRate: '78 bpm',
+            bloodPressure: '118/78 mmHg',
+            temperature: '98.8°F',
+            respiratoryRate: '17 breaths/min',
+        }
+    }
+];
+
 export const patientAdmissionsChartData = [
     { date: "Jan", admissions: 120 },
     { date: "Feb", admissions: 130 },
