@@ -76,6 +76,63 @@ export const appointments = [
   },
 ];
 
+export const employees = [
+  {
+    id: 'EMP001',
+    name: 'Dr. Ava Williams',
+    role: 'Cardiologist',
+    department: 'Cardiology',
+    email: 'ava.williams@apexcare.com',
+    phone: '555-0101',
+    status: 'Active',
+  },
+  {
+    id: 'EMP002',
+    name: 'Dr. Noah Brown',
+    role: 'Dentist',
+    department: 'Dental',
+    email: 'noah.brown@apexcare.com',
+    phone: '555-0102',
+    status: 'Active',
+  },
+  {
+    id: 'EMP003',
+    name: 'Dr. Sophia Garcia',
+    role: 'Neurologist',
+    department: 'Neurology',
+    email: 'sophia.garcia@apexcare.com',
+    phone: '555-0103',
+    status: 'On Leave',
+  },
+  {
+    id: 'EMP004',
+    name: 'Dr. James Davis',
+    role: 'Radiologist',
+    department: 'Radiology',
+    email: 'james.davis@apexcare.com',
+    phone: '555-0104',
+    status: 'Active',
+  },
+  {
+    id: 'EMP005',
+    name: 'Nurse Liam Johnson',
+    role: 'Registered Nurse',
+    department: 'General Medicine',
+    email: 'liam.johnson@apexcare.com',
+    phone: '555-0105',
+    status: 'Active',
+  },
+  {
+    id: 'EMP006',
+    name: 'Nurse Olivia Smith',
+    role: 'Nurse Practitioner',
+    department: 'Pediatrics',
+    email: 'olivia.smith@apexcare.com',
+    phone: '555-0106',
+    status: 'Active',
+  },
+];
+
 export const patientAdmissionsChartData = [
     { date: "Jan", admissions: 120 },
     { date: "Feb", admissions: 130 },
