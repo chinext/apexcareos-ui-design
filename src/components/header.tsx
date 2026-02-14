@@ -8,6 +8,8 @@ import {
   Sun,
   Search,
   Sparkles,
+  User,
+  ShieldAlert,
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -59,7 +61,7 @@ export function Header() {
           />
         </div>
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1">
         <Link href="/summarize" passHref>
           <Button className="bg-gradient-to-r from-primary to-teal-500 text-white">
             <Sparkles className="mr-2 h-4 w-4" />
@@ -102,20 +104,47 @@ export function Header() {
               <span className="sr-only">Notifications</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-80">
-            <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+          <DropdownMenuContent align="end" className="w-96">
+            <div className="flex items-center justify-between p-2">
+                <p className="font-semibold">Notifications</p>
+                <Button variant="link" size="sm" className="text-primary">Clear all</Button>
+            </div>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <div className="flex flex-col">
-                <p className="font-semibold">New appointment scheduled</p>
-                <p className="text-xs text-muted-foreground">Dr. Smith with John Doe at 2:30 PM</p>
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <div className="flex flex-col">
-                <p className="font-semibold">Password expiring soon</p>
-                <p className="text-xs text-muted-foreground">Your password will expire in 3 days.</p>
-              </div>
+            <div className='p-1'>
+              <DropdownMenuItem className="flex cursor-pointer items-start gap-3 p-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/50">
+                      <CalendarDays className="h-4 w-4 text-green-600 dark:text-green-400" />
+                  </div>
+                  <div className="flex-1">
+                      <p className="text-sm font-medium">New appointment scheduled</p>
+                      <p className="text-xs text-muted-foreground">Dr. Smith with John Doe</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground">10m</p>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex cursor-pointer items-start gap-3 p-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/50">
+                      <User className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div className="flex-1">
+                      <p className="text-sm font-medium">New patient registered</p>
+                      <p className="text-xs text-muted-foreground">A new patient has been added.</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground">1h</p>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex cursor-pointer items-start gap-3 p-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-100 dark:bg-yellow-900/50">
+                      <ShieldAlert className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
+                  </div>
+                  <div className="flex-1">
+                      <p className="text-sm font-medium">Password expiring soon</p>
+                      <p className="text-xs text-muted-foreground">Your password will expire in 3 days.</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground">2d</p>
+              </DropdownMenuItem>
+            </div>
+            <DropdownMenuSeparator />
+             <DropdownMenuItem className="justify-center py-2">
+                <Button variant="link" className="w-full text-primary">View all notifications</Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
