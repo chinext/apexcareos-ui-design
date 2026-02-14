@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { navGroups } from '@/lib/nav-links';
+import { navGroups, NavGroup } from '@/lib/nav-links';
 import { cn } from '@/lib/utils';
 import { HospitalSelector } from './hospital-selector';
 import {
@@ -15,6 +15,51 @@ import { AppLogo } from './app-logo';
 export function SecondarySidebar({ isOpen }: { isOpen: boolean }) {
   const pathname = usePathname();
 
+  const getVisibleNavGroups = () => {
+    const defaultGroups = navGroups.filter((g) => g.groupLabel === 'Main');
+
+    if (pathname.startsWith('/dashboard')) {
+      return navGroups.filter((g) => g.groupLabel === 'Main');
+    }
+    if (pathname.startsWith('/crm')) {
+      return navGroups.filter((g) => g.groupLabel === 'Marketing');
+    }
+    if (pathname.startsWith('/finance')) {
+      return navGroups.filter((g) => g.groupLabel === 'Finance & Accounts');
+    }
+    if (pathname.startsWith('/hr')) {
+      return navGroups.filter((g) => g.groupLabel === 'Staffs');
+    }
+    if (
+      pathname.startsWith('/appointments') ||
+      pathname.startsWith('/services') ||
+      pathname.startsWith('/locations') ||
+      pathname.startsWith('/medical') ||
+      pathname.startsWith('/pharmacy') ||
+      pathname.startsWith('/laboratory') ||
+      pathname.startsWith('/radiology') ||
+      pathname.startsWith('/dental') ||
+      pathname.startsWith('/nurse') ||
+      pathname.startsWith('/inventory') ||
+      pathname.startsWith('/patients')
+    ) {
+      return navGroups.filter((g) => g.groupLabel === 'Clinic');
+    }
+    if (
+      pathname.startsWith('/activities') ||
+      pathname.startsWith('/messages') ||
+      pathname.startsWith('/reporting') ||
+      pathname.startsWith('/settings')
+    ) {
+      return navGroups.filter((g) => g.groupLabel === 'Other');
+    }
+
+    return defaultGroups;
+  };
+
+  const visibleNavGroups = getVisibleNavGroups();
+
+
   return (
     <aside
       className={cn(
@@ -26,7 +71,7 @@ export function SecondarySidebar({ isOpen }: { isOpen: boolean }) {
         <HospitalSelector />
       </div>
       <nav className="flex-1 space-y-2 overflow-y-auto p-4">
-        {navGroups.map((group) => (
+        {visibleNavGroups.map((group) => (
           <div key={group.groupLabel}>
             <h3 className="mb-2 px-4 text-xs font-semibold uppercase text-muted-foreground tracking-wider">
               {group.groupLabel}

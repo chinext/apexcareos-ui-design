@@ -20,6 +20,7 @@ import {
   Smile,
   UserPlus,
   Briefcase,
+  Volume2,
 } from 'lucide-react';
 
 export interface SubLink {
@@ -61,9 +62,21 @@ export const navGroups: NavGroup[] = [
     links: [
       { label: 'Appointments', href: '/appointments', icon: Calendar },
       { label: 'Doctors', href: '/hr/employees', icon: User },
-      { label: 'Patients', href: '/crm/patients', icon: Users },
       { label: 'Services', href: '/services', icon: Stethoscope },
       { label: 'Locations', href: '/locations', icon: Building },
+    ],
+  },
+  {
+    groupLabel: 'Marketing',
+    links: [
+      { label: 'Dashboard', href: '/crm/dashboard', icon: LayoutDashboard },
+      { label: 'Lead', href: '/crm/lead', icon: UserPlus },
+      { label: 'Opportunity', href: '/crm/opportunity', icon: Briefcase },
+      { label: 'Retainer', href: '/crm/retainer', icon: FileText },
+      { label: 'Referral', href: '/crm/referral', icon: Users },
+      { label: 'Report', href: '/crm/report', icon: BarChart },
+      { label: 'Campaign', href: '/crm/campaign', icon: Volume2 },
+      { label: 'Patients', href: '/crm/patients', icon: Users },
     ],
   },
   {
@@ -95,11 +108,6 @@ export const navGroups: NavGroup[] = [
 
 export const navLinks: NavLink[] = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  {
-    label: 'Patient',
-    href: '/patients',
-    icon: Users,
-  },
   { label: 'Appointments', href: '/appointments', icon: Calendar },
   { label: 'Medical', href: '/medical', icon: Stethoscope },
   {
