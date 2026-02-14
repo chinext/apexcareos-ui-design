@@ -297,6 +297,8 @@ export const chartOfAccounts = [
     type: 'Asset',
     description: 'Cash on hand and in bank accounts.',
     status: 'Active',
+    currency: 'USD',
+    balance: 150000.75,
   },
   {
     code: '1200',
@@ -304,6 +306,8 @@ export const chartOfAccounts = [
     type: 'Asset',
     description: 'Money owed to the company by its customers.',
     status: 'Active',
+    currency: 'USD',
+    balance: 75000.0,
   },
   {
     code: '1600',
@@ -311,6 +315,8 @@ export const chartOfAccounts = [
     type: 'Asset',
     description: 'Expenses paid in advance.',
     status: 'Active',
+    currency: 'USD',
+    balance: 12000.5,
   },
   {
     code: '1700',
@@ -318,6 +324,8 @@ export const chartOfAccounts = [
     type: 'Asset',
     description: 'Long-term assets like equipment and buildings.',
     status: 'Active',
+    currency: 'USD',
+    balance: 550000.0,
   },
   {
     code: '2010',
@@ -325,6 +333,8 @@ export const chartOfAccounts = [
     type: 'Liability',
     description: 'Money the company owes to its suppliers.',
     status: 'Active',
+    currency: 'USD',
+    balance: -45000.0,
   },
   {
     code: '2200',
@@ -332,6 +342,8 @@ export const chartOfAccounts = [
     type: 'Liability',
     description: 'Expenses that have been incurred but not yet paid.',
     status: 'Active',
+    currency: 'USD',
+    balance: -25000.0,
   },
   {
     code: '3000',
@@ -339,13 +351,18 @@ export const chartOfAccounts = [
     type: 'Equity',
     description: 'Investment from shareholders.',
     status: 'Active',
+    currency: 'USD',
+    balance: -300000.0,
   },
   {
     code: '3500',
     name: 'Retained Earnings',
     type: 'Equity',
-    description: 'Cumulative net earnings or profits of the company after accounting for dividend payments.',
+    description:
+      'Cumulative net earnings or profits of the company after accounting for dividend payments.',
     status: 'Active',
+    currency: 'USD',
+    balance: -150000.0,
   },
   {
     code: '4000',
@@ -353,6 +370,8 @@ export const chartOfAccounts = [
     type: 'Revenue',
     description: 'Revenue from services provided.',
     status: 'Active',
+    currency: 'USD',
+    balance: -250000.25,
   },
   {
     code: '4500',
@@ -360,6 +379,8 @@ export const chartOfAccounts = [
     type: 'Revenue',
     description: 'Revenue from interest on investments.',
     status: 'Inactive',
+    currency: 'USD',
+    balance: -5000.0,
   },
   {
     code: '5010',
@@ -367,6 +388,8 @@ export const chartOfAccounts = [
     type: 'Expense',
     description: 'Employee salaries and wages.',
     status: 'Active',
+    currency: 'USD',
+    balance: 85000.0,
   },
   {
     code: '5020',
@@ -374,6 +397,8 @@ export const chartOfAccounts = [
     type: 'Expense',
     description: 'Rent for office space.',
     status: 'Active',
+    currency: 'USD',
+    balance: 15000.0,
   },
   {
     code: '5030',
@@ -381,12 +406,17 @@ export const chartOfAccounts = [
     type: 'Expense',
     description: 'Cost of utilities like electricity, water, gas.',
     status: 'Active',
+    currency: 'USD',
+    balance: 3500.0,
   },
   {
     code: '5040',
     name: 'Depreciation Expense',
     type: 'Expense',
-    description: 'The allocation of the cost of a tangible asset over its useful life.',
+    description:
+      'The allocation of the cost of a tangible asset over its useful life.',
     status: 'Inactive',
+    currency: 'USD',
+    balance: 10000.0,
   },
 ];

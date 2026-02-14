@@ -38,13 +38,13 @@ const accountSchema = z.object({
   status: z.enum(['Active', 'Inactive']),
 });
 
-type AccountFormValues = z.infer<typeof accountSchema>;
+export type AccountFormValues = z.infer<typeof accountSchema>;
 
 interface AddAccountDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSave: (data: AccountFormValues) => void;
-  account: AccountFormValues | null;
+  account: Partial<AccountFormValues> | null;
 }
 
 export function AddAccountDialog({
@@ -65,9 +65,9 @@ export function AddAccountDialog({
   });
 
   useEffect(() => {
-    if (account) {
+    if (open && account) {
       form.reset(account);
-    } else {
+    } else if (open && !account) {
       form.reset({
         code: '',
         name: '',
@@ -131,6 +131,7 @@ export function AddAccountDialog({
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -174,6 +175,7 @@ export function AddAccountDialog({
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                     value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>

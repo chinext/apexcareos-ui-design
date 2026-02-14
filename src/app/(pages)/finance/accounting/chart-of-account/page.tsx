@@ -57,7 +57,10 @@ import {
 import { Input } from '@/components/ui/input';
 
 import { chartOfAccounts as initialData } from '@/lib/data';
-import { AddAccountDialog } from '@/components/add-account-dialog';
+import {
+  AddAccountDialog,
+  type AccountFormValues,
+} from '@/components/add-account-dialog';
 import { cn } from '@/lib/utils';
 import { PageHeader } from '@/components/page-header';
 
@@ -67,6 +70,8 @@ export type Account = {
   type: string;
   description: string;
   status: 'Active' | 'Inactive';
+  currency: string;
+  balance: number;
 };
 
 const statusVariant: {
@@ -105,13 +110,25 @@ export default function AccountingChartOfAccountPage() {
     null
   );
 
-  const handleSaveAccount = (account: Account) => {
+  const handleSaveAccount = (formValues: AccountFormValues) => {
     if (accountToEdit) {
       setData(
-        data.map((acc) => (acc.code === account.code ? account : acc))
+        data.map((acc) =>
+          acc.code === accountToEdit.code
+            ? { ...acc, ...formValues, description: formValues.description || '' }
+            : acc
+        )
       );
     } else {
-      setData([account, ...data]);
+      setData([
+        {
+          ...formValues,
+          description: formValues.description || '',
+          currency: 'USD',
+          balance: 0,
+        },
+        ...data,
+      ]);
     }
     setAccountToEdit(null);
   };
@@ -169,6 +186,34 @@ export default function AccountingChartOfAccountPage() {
       ),
     },
     {
+      accessorKey: 'currency',
+      header: 'Currency',
+    },
+    {
+      accessorKey: 'balance',
+      header: ({ column }) => (
+        <div className="text-right">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            Balance
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      ),
+      cell: ({ row }) => {
+        const amount = row.original.balance;
+        const currencyCode = row.original.currency;
+        const formatted = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: currencyCode,
+        }).format(amount);
+
+        return <div className="text-right font-medium">{formatted}</div>;
+      },
+    },
+    {
       accessorKey: 'status',
       header: 'Status',
       cell: ({ row }) => {
@@ -201,6 +246,7 @@ export default function AccountingChartOfAccountPage() {
                 >
                   Edit
                 </DropdownMenuItem>
+                <DropdownMenuItem>Run report</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setAccountToDelete(account)}>
                   Delete
                 </DropdownMenuItem>
