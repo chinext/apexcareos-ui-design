@@ -34,16 +34,16 @@ const statusVariant: {
   'On Leave': 'secondary',
 };
 
-export default function HREmployeesPage() {
+export default function AllPersonnelPage() {
   return (
     <main className="flex-1 space-y-6 p-4 md:p-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold tracking-tight md:text-2xl">
-            Employees
+            All Personnel
           </h1>
           <p className="text-muted-foreground">
-            Manage your hospital staff and their records.
+            Manage all personnel in the system.
           </p>
         </div>
         <AddEmployeeDialog />
@@ -51,9 +51,9 @@ export default function HREmployeesPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Employee Roster</CardTitle>
+          <CardTitle>Personnel Roster</CardTitle>
           <CardDescription>
-            A list of all employees in the system.
+            A list of all personnel in the system.
           </CardDescription>
         </CardHeader>
         <CardContent>

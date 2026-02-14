@@ -28,7 +28,7 @@ export function SecondarySidebar({ isOpen }: { isOpen: boolean }) {
       return navGroups.filter((g) => g.groupLabel === 'Finance & Accounts');
     }
     if (pathname.startsWith('/hr')) {
-      return navGroups.filter((g) => g.groupLabel === 'Staffs');
+      return navGroups.filter((g) => g.groupLabel === 'Human Resources');
     }
     if (
       pathname.startsWith('/appointments') ||

@@ -21,6 +21,11 @@ import {
   UserPlus,
   Briefcase,
   Volume2,
+  Network,
+  CalendarOff,
+  ClipboardCheck,
+  CalendarDays,
+  UserCog,
 } from 'lucide-react';
 
 export interface SubLink {
@@ -80,11 +85,24 @@ export const navGroups: NavGroup[] = [
     ],
   },
   {
-    groupLabel: 'Staffs',
+    groupLabel: 'Human Resources',
     links: [
-      { label: 'Staff', href: '/hr/employees', icon: UserRoundCog },
-      { label: 'Leaves', href: '/hr/leave', icon: LogOut },
-      { label: 'Payroll', href: '/finance/payroll', icon: DollarSign },
+      { label: 'All Personnel', href: '/hr/employees', icon: Users },
+      { label: 'Staff exit', href: '/hr/staff-exit', icon: LogOut },
+      { label: 'Personnel Training', href: '/hr/training', icon: UserCog },
+      {
+        label: 'Department/Organogram',
+        href: '/hr/organogram',
+        icon: Network,
+      },
+      { label: 'Leaves', href: '/hr/leave', icon: CalendarOff },
+      { label: 'Holidays', href: '/hr/holidays', icon: Calendar },
+      { label: 'Attendance', href: '/hr/attendance', icon: ClipboardCheck },
+      {
+        label: 'Monthly Schedule',
+        href: '/hr/schedule',
+        icon: CalendarDays,
+      },
     ],
   },
   {
@@ -92,6 +110,7 @@ export const navGroups: NavGroup[] = [
     links: [
       { label: 'Invoices', href: '/finance/invoices', icon: FileText },
       { label: 'Expenses', href: '/finance/expenses', icon: CreditCard },
+      { label: 'Payroll', href: '/finance/payroll', icon: DollarSign },
     ],
   },
   {
@@ -138,7 +157,7 @@ export const navLinks: NavLink[] = [
     icon: Stethoscope,
   },
   {
-    label: 'HR',
+    label: 'HRM',
     href: '/hr',
     icon: UserRoundCog,
   },
