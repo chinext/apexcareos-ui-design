@@ -59,7 +59,6 @@ export function SecondarySidebar({ isOpen }: { isOpen: boolean }) {
 
   const visibleNavGroups = getVisibleNavGroups();
 
-
   return (
     <aside
       className={cn(
@@ -79,7 +78,13 @@ export function SecondarySidebar({ isOpen }: { isOpen: boolean }) {
             <div className="space-y-1">
               {group.links.map((link) =>
                 link.subLinks ? (
-                  <Collapsible key={link.label} defaultOpen={link.initiallyOpen}>
+                  <Collapsible
+                    key={link.label}
+                    defaultOpen={
+                      link.initiallyOpen ||
+                      link.subLinks.some((sl) => pathname.startsWith(sl.href))
+                    }
+                  >
                     <CollapsibleTrigger asChild>
                       <button className="group flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
                         <link.icon className="h-4 w-4" />
@@ -88,20 +93,58 @@ export function SecondarySidebar({ isOpen }: { isOpen: boolean }) {
                       </button>
                     </CollapsibleTrigger>
                     <CollapsibleContent className="space-y-1 pt-1">
-                      {link.subLinks.map((subLink) => (
-                        <Link
-                          key={subLink.label}
-                          href={subLink.href}
-                          className={cn(
-                            'group flex items-center gap-3 rounded-md py-2 pl-11 pr-3 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground',
-                            pathname === subLink.href &&
-                              'text-primary'
-                          )}
-                        >
-                          <div className="h-1.5 w-1.5 rounded-full border border-current group-hover:border-primary"></div>
-                          <span>{subLink.label}</span>
-                        </Link>
-                      ))}
+                      {link.subLinks.map((subLink) =>
+                        subLink.subLinks ? (
+                          <Collapsible
+                            key={subLink.label}
+                            defaultOpen={
+                              subLink.initiallyOpen ||
+                              subLink.subLinks.some((sl) =>
+                                pathname.startsWith(sl.href)
+                              )
+                            }
+                            className="pl-8"
+                          >
+                            <CollapsibleTrigger asChild>
+                              <button className="group flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
+                                <div className="h-1.5 w-1.5 rounded-full border border-current group-hover:border-primary"></div>
+                                <span className="flex-1 text-left">
+                                  {subLink.label}
+                                </span>
+                                <ChevronRight className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-90" />
+                              </button>
+                            </CollapsibleTrigger>
+                            <CollapsibleContent className="space-y-1 pt-1">
+                              {subLink.subLinks.map((grandchildLink) => (
+                                <Link
+                                  key={grandchildLink.label}
+                                  href={grandchildLink.href}
+                                  className={cn(
+                                    'group flex items-center gap-3 rounded-md py-2 pl-8 pr-3 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground',
+                                    pathname === grandchildLink.href &&
+                                      'text-primary'
+                                  )}
+                                >
+                                  <div className="h-1.5 w-1.5 rounded-full border border-current group-hover:border-primary"></div>
+                                  <span>{grandchildLink.label}</span>
+                                </Link>
+                              ))}
+                            </CollapsibleContent>
+                          </Collapsible>
+                        ) : (
+                          <Link
+                            key={subLink.label}
+                            href={subLink.href}
+                            className={cn(
+                              'group flex items-center gap-3 rounded-md py-2 pl-11 pr-3 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground',
+                              pathname === subLink.href && 'text-primary'
+                            )}
+                          >
+                            <div className="h-1.5 w-1.5 rounded-full border border-current group-hover:border-primary"></div>
+                            <span>{subLink.label}</span>
+                          </Link>
+                        )
+                      )}
                     </CollapsibleContent>
                   </Collapsible>
                 ) : (
