@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 
 export default function LaboratoryPage() {
-  redirect('/laboratory/results');
+  redirect('/laboratory/dashboard');
 }

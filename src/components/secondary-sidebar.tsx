@@ -30,13 +30,15 @@ export function SecondarySidebar({ isOpen }: { isOpen: boolean }) {
     if (pathname.startsWith('/hr')) {
       return navGroups.filter((g) => g.groupLabel === 'Human Resources');
     }
+    if (pathname.startsWith('/laboratory')) {
+      return navGroups.filter((g) => g.groupLabel === 'Laboratory');
+    }
     if (
       pathname.startsWith('/appointments') ||
       pathname.startsWith('/services') ||
       pathname.startsWith('/locations') ||
       pathname.startsWith('/medical') ||
       pathname.startsWith('/pharmacy') ||
-      pathname.startsWith('/laboratory') ||
       pathname.startsWith('/radiology') ||
       pathname.startsWith('/dental') ||
       pathname.startsWith('/nurse') ||

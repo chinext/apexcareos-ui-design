@@ -30,6 +30,9 @@ import {
   ShoppingCart,
   ArrowLeftRight,
   Book,
+  ClipboardList,
+  TestTube,
+  Cable,
 } from 'lucide-react';
 
 export interface SubLink {
@@ -73,6 +76,17 @@ export const navGroups: NavGroup[] = [
       { label: 'Doctors', href: '/hr/employees', icon: User },
       { label: 'Services', href: '/services', icon: Stethoscope },
       { label: 'Locations', href: '/locations', icon: Building },
+    ],
+  },
+  {
+    groupLabel: 'Laboratory',
+    links: [
+      { label: 'Dashboard', href: '/laboratory/dashboard', icon: LayoutDashboard },
+      { label: 'Services', href: '/laboratory/services', icon: Stethoscope },
+      { label: 'Request & Result', href: '/laboratory/request-result', icon: ClipboardList },
+      { label: 'Specimen', href: '/laboratory/specimen', icon: TestTube },
+      { label: 'Requisition', href: '/laboratory/requisition', icon: FileText },
+      { label: 'Instrument Interface', href: '/laboratory/instrument-interface', icon: Cable },
     ],
   },
   {
