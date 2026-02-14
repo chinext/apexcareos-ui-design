@@ -2,33 +2,96 @@ import {
   Users,
   Calendar,
   Stethoscope,
-  Pill,
-  FlaskConical,
-  Radiation,
-  Smile,
-  UserPlus,
-  CreditCard,
-  Boxes,
+  User,
+  Activity,
+  MessageSquare,
+  FileText,
+  DollarSign,
+  LogOut,
+  Building,
   UserRoundCog,
-  Briefcase,
+  CreditCard,
   BarChart,
   Settings,
   LayoutDashboard,
   LucideIcon,
-  Video,
+  FlaskConical,
+  Radiation,
+  Smile,
+  UserPlus,
+  Briefcase,
 } from 'lucide-react';
 
 export interface SubLink {
   label: string;
   href: string;
+  icon?: LucideIcon;
+}
+
+export interface NavGroup {
+  groupLabel: string;
+  links: NavLink[];
 }
 
 export interface NavLink {
-  label: string;
+  label:string;
   href: string;
   icon: LucideIcon;
   subLinks?: SubLink[];
+  initiallyOpen?: boolean;
 }
+
+export const navGroups: NavGroup[] = [
+  {
+    groupLabel: 'Main',
+    links: [
+      {
+        label: 'Dashboard',
+        href: '/dashboard',
+        icon: LayoutDashboard,
+        initiallyOpen: true,
+        subLinks: [
+          { label: 'Admin Dashboard', href: '/dashboard' },
+        ],
+      },
+    ],
+  },
+  {
+    groupLabel: 'Clinic',
+    links: [
+      { label: 'Appointments', href: '/appointments', icon: Calendar },
+      { label: 'Doctors', href: '/hr/employees', icon: User },
+      { label: 'Patients', href: '/crm/patients', icon: Users },
+      { label: 'Services', href: '/services', icon: Stethoscope },
+      { label: 'Locations', href: '/locations', icon: Building },
+    ],
+  },
+  {
+    groupLabel: 'Staffs',
+    links: [
+      { label: 'Staff', href: '/hr/employees', icon: UserRoundCog },
+      { label: 'Leaves', href: '/hr/leave', icon: LogOut },
+      { label: 'Payroll', href: '/finance/payroll', icon: DollarSign },
+    ],
+  },
+  {
+    groupLabel: 'Finance & Accounts',
+    links: [
+      { label: 'Invoices', href: '/finance/invoices', icon: FileText },
+      { label: 'Expenses', href: '/finance/expenses', icon: CreditCard },
+    ],
+  },
+  {
+    groupLabel: 'Other',
+    links: [
+      { label: 'Activities', href: '/activities', icon: Activity },
+      { label: 'Messages', href: '/messages', icon: MessageSquare },
+      { label: 'Reporting', href: '/reporting', icon: BarChart },
+      { label: 'Settings', href: '/settings', icon: Settings },
+    ],
+  },
+];
+
 
 export const navLinks: NavLink[] = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -36,94 +99,54 @@ export const navLinks: NavLink[] = [
     label: 'Patient',
     href: '/patients',
     icon: Users,
-    subLinks: [
-      { label: 'Patient List', href: '/patients' },
-      { label: 'Patient Profile', href: '/medical' },
-    ],
   },
-  { label: 'Appointments & Queue', href: '/appointments', icon: Calendar },
+  { label: 'Appointments', href: '/appointments', icon: Calendar },
   { label: 'Medical', href: '/medical', icon: Stethoscope },
   {
     label: 'Pharmacy',
     href: '/pharmacy',
-    icon: Pill,
-    subLinks: [
-      { label: 'Prescriptions', href: '/pharmacy/prescriptions' },
-      { label: 'Inventory', href: '/pharmacy/inventory' },
-    ],
+    icon: Stethoscope,
   },
   {
     label: 'Laboratory',
     href: '/laboratory',
     icon: FlaskConical,
-    subLinks: [
-      { label: 'Test Results', href: '/laboratory/results' },
-      { label: 'Test Requests', href: '/laboratory/requests' },
-    ],
   },
   {
     label: 'Radiology',
     href: '/radiology',
     icon: Radiation,
-    subLinks: [
-      { label: 'Scans', href: '/radiology/scans' },
-      { label: 'Reports', href: '/radiology/reports' },
-    ],
   },
   { label: 'Dental', href: '/dental', icon: Smile },
   { label: 'Nurse', href: '/nurse', icon: UserPlus },
   {
-    label: 'Finance & Accounting',
+    label: 'Finance',
     href: '/finance',
     icon: CreditCard,
-    subLinks: [
-      { label: 'Invoices', href: '/finance/invoices' },
-      { label: 'Payment History', href: '/finance/history' },
-    ],
   },
   {
     label: 'Inventory',
     href: '/inventory',
-    icon: Boxes,
-    subLinks: [
-      { label: 'Supplies', href: '/inventory/supplies' },
-      { label: 'Orders', href: '/inventory/orders' },
-    ],
+    icon: Stethoscope,
   },
   {
-    label: 'Human Resource',
+    label: 'HR',
     href: '/hr',
     icon: UserRoundCog,
-    subLinks: [
-      { label: 'Employees', href: '/hr/employees' },
-      { label: 'Leave', href: '/hr/leave' },
-    ],
   },
   {
     label: 'CRM',
     href: '/crm',
     icon: Briefcase,
-    subLinks: [
-      { label: 'Patients', href: '/crm/patients' },
-      { label: 'Outreach', href: '/crm/outreach' },
-    ],
   },
   {
     label: 'Reporting',
     href: '/reporting',
     icon: BarChart,
-    subLinks: [
-      { label: 'Analytics', href: '/reporting/analytics' },
-      { label: 'Generate Reports', href: '/reporting/generate' },
-    ],
   },
   {
     label: 'General',
     href: '/settings',
     icon: Settings,
-    subLinks: [
-      { label: 'Settings', href: '/settings' },
-      { label: 'Telemedicine', href: '/telemedicine' },
-    ],
   },
 ];

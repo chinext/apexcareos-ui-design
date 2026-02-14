@@ -1,34 +1,111 @@
-import { BarChart, Calendar, DollarSign, Users } from "lucide-react";
+import { User, Users, Calendar, DollarSign } from 'lucide-react';
 
 export const kpis = [
   {
-    title: "Total Patients",
-    value: "1,254",
+    title: 'Doctors',
+    value: '247',
+    icon: User,
+    change: '+20%',
+    changeColor: 'text-green-500',
+    duration: 'in last 7 days',
+  },
+  {
+    title: 'Patients',
+    value: '4178',
     icon: Users,
-    change: "+15.2%",
-    changeColor: "text-green-500",
+    change: '-12%',
+    changeColor: 'text-red-500',
+    duration: 'in last 7 days',
   },
   {
-    title: "Appointments Today",
-    value: "82",
+    title: 'Appointments',
+    value: '1278',
     icon: Calendar,
-    change: "+5.0%",
-    changeColor: "text-green-500",
+    change: '+5%',
+    changeColor: 'text-green-500',
+    duration: 'in last 7 days',
   },
   {
-    title: "Bed Occupancy",
-    value: "76%",
-    icon: BarChart,
-    change: "-2.1%",
-    changeColor: "text-red-500",
-  },
-  {
-    title: "Revenue Today",
-    value: "$12,840",
+    title: 'Revenue',
+    value: '$55,240',
     icon: DollarSign,
-    change: "+8.3%",
-    changeColor: "text-green-500",
+    change: '+8%',
+    changeColor: 'text-green-500',
+    duration: 'in last 7 days',
   },
+];
+
+export const hospitals = [
+  {
+    id: 'trustcare',
+    name: 'Trustcare Clinic',
+    location: 'Las Vegas',
+    avatar: 'https://i.pravatar.cc/40?u=trustcare',
+  },
+  {
+    id: 'apexhealth',
+    name: 'Apex Health',
+    location: 'New York',
+    avatar: 'https://i.pravatar.cc/40?u=apexhealth',
+  },
+  {
+    id: 'summitmed',
+    name: 'Summit Medical',
+    location: 'Chicago',
+    avatar: 'https://i.pravatar.cc/40?u=summitmed',
+  },
+];
+
+export const appointmentStats = [
+  { month: 'Jan', all: 4000, completed: 2400, cancelled: 400 },
+  { month: 'Feb', all: 3000, completed: 1398, cancelled: 300 },
+  { month: 'Mar', all: 5000, completed: 4800, cancelled: 500 },
+  { month: 'Apr', all: 4780, completed: 3908, cancelled: 450 },
+  { month: 'May', all: 5890, completed: 4800, cancelled: 600 },
+  { month: 'Jun', all: 4390, completed: 3800, cancelled: 550 },
+  { month: 'Jul', all: 5490, completed: 4300, cancelled: 650 },
+  { month: 'Aug', all: 4490, completed: 3300, cancelled: 450 },
+  { month: 'Sep', all: 3490, completed: 2300, cancelled: 350 },
+  { month: 'Oct', all: 4490, completed: 3300, cancelled: 450 },
+  { month: 'Nov', all: 3490, completed: 2300, cancelled: 350 },
+  { month: 'Dec', all: 5490, completed: 4300, cancelled: 650 },
+];
+
+export const popularDoctors = [
+    { name: 'Dr. Alex Morgan', specialty: 'Cardiologist', bookings: 258, avatar: 'https://i.pravatar.cc/40?u=alex' },
+    { name: 'Dr. Emily Carter', specialty: 'Pediatrician', bookings: 125, avatar: 'https://i.pravatar.cc/40?u=emily' },
+    { name: 'Dr. David Lee', specialty: 'Gynecologist', bookings: 115, avatar: 'https://i.pravatar.cc/40?u=david' },
+];
+
+export const departmentPatientChartData = [
+  { name: 'Cardiology', value: 214, fill: "hsl(var(--chart-1))" },
+  { name: 'Dental', value: 150, fill: "hsl(var(--chart-2))" },
+  { name: 'Neurology', value: 101, fill: "hsl(var(--chart-3))" },
+  { name: 'Other', value: 173, fill: "hsl(var(--chart-4))" },
+];
+
+export const doctorSchedule = [
+  { name: 'Dr. Sarah Johnson', specialty: 'Orthopedic Surgeon' },
+  { name: 'Dr. Emily Carter', specialty: 'Pediatrician' },
+  { name: 'Dr. David Lee', specialty: 'Gynecologist' },
+  { name: 'Dr. Michael Smith', specialty: 'Cardiologist' },
+];
+
+
+export const incomeByTreatment = [
+  { treatment: 'Cardiology', appointments: 4558, income: 5985 },
+  { treatment: 'Radiology', appointments: 4125, income: 5194 },
+  { treatment: 'Dental Surgery', appointments: 1795, income: 2716 },
+  { treatment: 'Orthopaedics', appointments: 3827, income: 4682 },
+  { treatment: 'General Medicine', appointments: 9894, income: 9450 },
+];
+
+export const allAppointments = [
+    { doctor: 'Dr. John Smith', patient: 'Jesus Adams', date: '28 May 2025 - 11:15 AM', status: 'Confirmed' },
+    { doctor: 'Dr. Lisa White', patient: 'Ezra Belcher', date: '29 May 2025 - 11:30 AM', status: 'Cancelled' },
+    { doctor: 'Dr. Patrick Brown', patient: 'Glen Lentz', date: '30 May 2025 - 09:30 AM', status: 'Confirmed' },
+    { doctor: 'Dr. Rachel Green', patient: 'Bernard Griffith', date: '30 May 2025 - 10:00 AM', status: 'Checked Out' },
+    { doctor: 'Dr. Michael Smith', patient: 'John Elsass', date: '30 May 2025 - 11:00 AM', status: 'Schedule' },
 ];
 
 export const appointments = [
@@ -212,11 +289,3 @@ export const patientAdmissionsChartData = [
     { date: "May", admissions: 160 },
     { date: "Jun", admissions: 180 },
 ];
-
-export const departmentPatientChartData = [
-  { name: 'Cardiology', value: 340, fill: "hsl(var(--chart-1))" },
-  { name: 'Orthopedics', value: 280, fill: "hsl(var(--chart-2))" },
-  { name: 'Neurology', value: 220, fill: "hsl(var(--chart-3))" },
-  { name: 'Pediatrics', value: 190, fill: "hsl(var(--chart-4))" },
-  { name: 'Oncology', value: 150, fill: "hsl(var(--chart-5))" },
-]
