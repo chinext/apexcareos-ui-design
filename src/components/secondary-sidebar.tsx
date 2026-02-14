@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { navGroups } from '@/lib/nav-links';
 import { cn } from '@/lib/utils';
+import { HospitalSelector } from './hospital-selector';
 import {
   Collapsible,
   CollapsibleContent,
@@ -21,8 +22,8 @@ export function SecondarySidebar({ isOpen }: { isOpen: boolean }) {
         isOpen ? 'translate-x-0' : '-translate-x-full'
       )}
     >
-      <div className="flex h-16 items-center px-6">
-        <AppLogo />
+      <div className="flex h-16 items-center border-b px-6">
+        <HospitalSelector />
       </div>
       <nav className="flex-1 space-y-2 overflow-y-auto p-4">
         {navGroups.map((group) => (

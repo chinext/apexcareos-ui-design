@@ -57,7 +57,7 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
     >
       <div className="flex items-center gap-4">
         <Button
-          variant="ghost"
+          variant="outline"
           size="icon"
           className="rounded-full"
           onClick={onToggleSidebar}
@@ -81,7 +81,7 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
           </Button>
         </Link>
         <Link href="/appointments/create" passHref>
-          <Button variant="ghost" size="icon" className="rounded-full">
+          <Button variant="outline" size="icon" className="rounded-full">
             <CalendarDays className="h-5 w-5" />
             <span className="sr-only">Calendar</span>
           </Button>
@@ -89,7 +89,7 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-full">
+            <Button variant="outline" size="icon" className="rounded-full">
               <Languages className="h-5 w-5" />
               <span className="sr-only">Language</span>
             </Button>
@@ -102,7 +102,7 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
         </DropdownMenu>
 
         {isClient && (
-           <Button variant="ghost" size="icon" className="rounded-full" onClick={toggleTheme}>
+           <Button variant="outline" size="icon" className="rounded-full" onClick={toggleTheme}>
             {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
             <span className="sr-only">Toggle Theme</span>
           </Button>
@@ -110,7 +110,7 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="relative rounded-full">
+            <Button variant="outline" size="icon" className="relative rounded-full">
               <Bell className="h-5 w-5" />
               <span className="absolute right-1.5 top-1.5 block h-2 w-2 rounded-full bg-red-500" />
               <span className="sr-only">Notifications</span>
@@ -163,7 +163,7 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
         
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="relative rounded-full">
+            <Button variant="outline" size="icon" className="relative rounded-full">
               <Mail className="h-5 w-5" />
               <span className="sr-only">Mail</span>
             </Button>
