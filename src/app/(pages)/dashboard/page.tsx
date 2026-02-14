@@ -38,6 +38,8 @@ import {
   Cell,
   Legend,
 } from 'recharts';
+import { PageHeader } from '@/components/page-header';
+import { CalendarDays, Plus } from 'lucide-react';
 
 const statusVariant: { [key: string]: 'default' | 'secondary' | 'destructive' | 'outline' } = {
   Confirmed: 'default',
@@ -50,9 +52,16 @@ const statusVariant: { [key: string]: 'default' | 'secondary' | 'destructive' | 
 export default function DashboardPage() {
   return (
     <main className="flex-1 space-y-6">
-      <div className="space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight">Admin Dashboard</h1>
-      </div>
+      <PageHeader title="Admin Dashboard">
+        <Button>
+          <Plus className="mr-2 h-4 w-4" />
+          New Appointment
+        </Button>
+        <Button variant="outline" className="bg-white text-foreground hover:bg-muted">
+          <CalendarDays className="mr-2 h-4 w-4" />
+          Schedule Availability
+        </Button>
+      </PageHeader>
 
       {/* KPI Cards */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
