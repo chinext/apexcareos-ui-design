@@ -10,6 +10,8 @@ import {
   Sparkles,
   User,
   ShieldAlert,
+  Receipt,
+  ChevronRight,
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -156,14 +158,63 @@ export function Header() {
               <span className="sr-only">Mail</span>
             </Button>
           </DropdownMenuTrigger>
-           <DropdownMenuContent align="end" className="w-80">
-            <DropdownMenuLabel>Inbox</DropdownMenuLabel>
+           <DropdownMenuContent align="end" className="w-96">
+            <div className="flex items-center justify-between p-2">
+                <p className="font-semibold">Message</p>
+            </div>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <div className="flex flex-col">
-                <p className="font-semibold">Patient Follow-up</p>
-                <p className="text-xs text-muted-foreground">From: Dr. Smith</p>
-              </div>
+            <div className='p-1'>
+              <DropdownMenuItem className="flex cursor-pointer items-start gap-3 p-2">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/50">
+                      <Receipt className="h-4 w-4 text-green-600 dark:text-green-400" />
+                  </div>
+                  <div className="flex-1">
+                      <p className="text-sm">Your store has a new order for 2 items totaling $1,299.00</p>
+                      <p className="text-xs text-muted-foreground">just now</p>
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex cursor-pointer items-start gap-3 p-2">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/50">
+                      <User className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div className="flex-1">
+                      <p className="text-sm">3 new customer account is created</p>
+                      <p className="text-xs text-muted-foreground">2 minutes ago</p>
+                  </div>
+                   <ChevronRight className="h-4 w-4 text-muted-foreground" />
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex cursor-pointer items-start gap-3 p-2">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-background">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5">
+                        <path d="M4.32111 2.37695L15.42 12.0004L4.32111 21.6238C3.33111 22.2478 2 21.5644 2 20.392V3.60875C2 2.43555 3.33111 1.75215 4.32111 2.37695Z" fill="#00A0F1"/>
+                        <path d="M19.531 9.22656L15.4199 12L19.531 14.7734C20.655 15.5204 22 14.721 22 13.4116V10.5884C22 9.27896 20.655 8.47956 19.531 9.22656Z" fill="#FFC107"/>
+                        <path d="M19.531 9.22656L4.32109 2.37695C5.07409 1.94295 6.00209 2.30875 6.00209 3.20455V20.7954C6.00209 21.6912 5.07409 22.057 4.32109 21.623L19.531 14.7734C20.089 14.4182 20.407 13.8824 20.407 13.2984C20.407 12.7144 20.089 12.1786 19.531 11.8234L15.4199 12L19.531 9.22656Z" fill="#4CAF50"/>
+                        <path d="M19.531 9.22656L4.32109 2.37695C3.33109 1.75215 2 2.43555 2 3.60875V4.05315L15.4199 12L2 19.9468V20.3912C2 21.5644 3.33109 22.2478 4.32109 21.623L19.531 14.7734C20.655 15.5204 22 14.721 22 13.4116V10.5884C22 9.27896 20.655 8.47956 19.531 9.22656Z" fill="#F44336"/>
+                      </svg>
+                  </div>
+                  <div className="flex-1">
+                      <p className="text-sm">Your android application has been approved</p>
+                      <p className="text-xs text-muted-foreground">5 minutes ago</p>
+                  </div>
+                   <ChevronRight className="h-4 w-4 text-muted-foreground" />
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex cursor-pointer items-start gap-3 p-2">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-background p-1">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5">
+                        <path d="M2.38379 13.5684C2.38379 13.5684 4.54299 13.3524 6.83979 10.9788C7.59219 10.158 7.97379 9.12124 8.01179 8.04604C8.04979 7.22524 7.63059 6.44284 6.90339 6.09604L6.10059 5.67604C5.75379 5.46004 5.33379 5.38324 4.91459 5.46004C4.80659 3.65524 6.06219 2.06644 7.82979 2.02804C9.52259 1.95124 11.0734 3.20644 11.209 4.93684C11.3074 6.13084 10.6546 7.22524 9.68019 7.64524L9.06579 7.89964C8.68419 8.04604 8.37579 8.35444 8.26779 8.71084C8.04979 9.37324 8.33739 10.1208 8.95179 10.6392C10.7938 12.4824 13.7314 12.336 13.7314 12.336L13.7698 12.3744C15.0638 10.9392 15.3514 9.00844 14.5866 7.22524C14.0286 5.96964 12.9342 5.09044 11.6402 4.77244C12.137 3.03844 13.8674 1.70644 15.7094 1.95124C17.7782 2.19604 19.1338 4.04924 18.8078 6.05764C18.6158 7.22524 17.963 8.22364 17.027 8.88604L16.4874 9.22284C16.1022 9.47724 15.6822 9.55404 15.2622 9.47724C15.1158 11.3196 13.7698 12.9852 11.9658 13.1316C10.273 13.2864 8.72219 12.0312 8.58659 10.3236C8.51019 9.40084 8.89179 8.56084 9.58299 8.04604C10.975 6.96124 13.0438 6.44284 15.2622 6.69724C15.2622 6.69724 15.5498 6.73564 15.8374 6.81244C16.8502 7.05724 17.6302 7.82284 17.963 8.78764C18.4214 10.0812 18.0022 11.5164 16.9486 12.4824C14.8874 14.4744 11.383 15.1368 11.383 15.1368L10.3702 20.3256C10.2622 20.9112 9.71979 21.3312 9.14379 21.3312H5.02259C4.48419 21.3312 4.02579 20.9496 3.94939 20.4336L2.38379 13.5684Z" fill="#2563EB"/>
+                      </svg>
+                  </div>
+                  <div className="flex-1">
+                      <p className="text-sm">Paypal payment method has been enabled for your store</p>
+                      <p className="text-xs text-muted-foreground">10 minutes ago</p>
+                  </div>
+                   <ChevronRight className="h-4 w-4 text-muted-foreground" />
+              </DropdownMenuItem>
+            </div>
+            <DropdownMenuSeparator />
+             <DropdownMenuItem className="justify-center py-2">
+                <Button variant="link" className="w-full text-primary">See all</Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
