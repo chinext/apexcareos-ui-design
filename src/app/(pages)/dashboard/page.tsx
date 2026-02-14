@@ -6,7 +6,7 @@ export default function DashboardPage() {
   return (
     <main className="flex-1 space-y-6 p-4 md:p-6">
       <div className="space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
+        <h1 className="text-xl font-bold tracking-tight md:text-2xl">
           Welcome back, Dr. Doe!
         </h1>
         <p className="text-muted-foreground">
@@ -22,7 +22,7 @@ export default function DashboardPage() {
               <kpi.icon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{kpi.value}</div>
+              <div className="text-xl font-bold">{kpi.value}</div>
               <p className={`text-xs ${kpi.changeColor}`}>{kpi.change} from yesterday</p>
             </CardContent>
           </Card>
