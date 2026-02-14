@@ -53,11 +53,11 @@ export default function DashboardPage() {
   return (
     <main className="flex-1 space-y-6">
       <PageHeader title="Admin Dashboard">
-        <Button>
+        <Button size="sm">
           <Plus className="mr-2 h-4 w-4" />
           New Appointment
         </Button>
-        <Button variant="outline" className="bg-white text-foreground hover:bg-muted">
+        <Button size="sm" variant="outline" className="bg-white text-foreground hover:bg-muted">
           <CalendarDays className="mr-2 h-4 w-4" />
           Schedule Availability
         </Button>
