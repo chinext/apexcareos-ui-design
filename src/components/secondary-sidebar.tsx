@@ -33,6 +33,9 @@ export function SecondarySidebar({ isOpen }: { isOpen: boolean }) {
     if (pathname.startsWith('/laboratory')) {
       return navGroups.filter((g) => g.groupLabel === 'Laboratory');
     }
+    if (pathname.startsWith('/dental')) {
+      return navGroups.filter((g) => g.groupLabel === 'Dental');
+    }
     if (
       pathname.startsWith('/appointments') ||
       pathname.startsWith('/services') ||
@@ -40,7 +43,6 @@ export function SecondarySidebar({ isOpen }: { isOpen: boolean }) {
       pathname.startsWith('/medical') ||
       pathname.startsWith('/pharmacy') ||
       pathname.startsWith('/radiology') ||
-      pathname.startsWith('/dental') ||
       pathname.startsWith('/nurse') ||
       pathname.startsWith('/inventory') ||
       pathname.startsWith('/patients')

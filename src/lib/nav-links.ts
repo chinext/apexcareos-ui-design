@@ -90,6 +90,16 @@ export const navGroups: NavGroup[] = [
     ],
   },
   {
+    groupLabel: 'Dental',
+    links: [
+      { label: 'Dashboard', href: '/dental/dashboard', icon: LayoutDashboard },
+      { label: 'Queue', href: '/dental/queue', icon: Users },
+      { label: 'Appointment', href: '/dental/appointment', icon: Calendar },
+      { label: 'Services', href: '/dental/services', icon: Stethoscope },
+      { label: 'Report', href: '/dental/report', icon: BarChart },
+    ],
+  },
+  {
     groupLabel: 'Marketing',
     links: [
       { label: 'Dashboard', href: '/crm/dashboard', icon: LayoutDashboard },
