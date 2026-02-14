@@ -5,6 +5,7 @@ import {
   Globe,
   Mail,
   Moon,
+  PanelLeft,
   Search,
   Sun,
 } from 'lucide-react';
@@ -19,7 +20,13 @@ import {
 } from './ui/dropdown-menu';
 import { useState, useEffect } from 'react';
 
-export function Header() {
+export function Header({
+  toggleSidebar,
+  hasSecondarySidebar,
+}: {
+  toggleSidebar: () => void;
+  hasSecondarySidebar: boolean;
+}) {
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
@@ -39,9 +46,22 @@ export function Header() {
 
   return (
     <header className="flex h-16 shrink-0 items-center justify-between border-b bg-card px-4 md:px-6">
-      <div className="relative hidden w-full max-w-md md:block">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input placeholder="Global search..." className="pl-10" />
+      <div className="flex items-center gap-4">
+        {hasSecondarySidebar && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            className="hidden sm:inline-flex"
+          >
+            <PanelLeft className="h-5 w-5" />
+            <span className="sr-only">Toggle secondary sidebar</span>
+          </Button>
+        )}
+        <div className="relative hidden w-full max-w-md md:block">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input placeholder="Global search..." className="pl-10" />
+        </div>
       </div>
       <div className="flex w-full items-center justify-end gap-2 sm:gap-4">
         <DropdownMenu>
