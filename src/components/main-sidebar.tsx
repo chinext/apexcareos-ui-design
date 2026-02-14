@@ -16,7 +16,7 @@ export function MainSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-20 flex w-16 flex-col border-r bg-sidebar text-sidebar-foreground">
+    <aside className="fixed inset-y-0 left-0 z-30 flex w-16 flex-col border-r bg-sidebar text-sidebar-foreground">
       <div className="flex h-16 shrink-0 items-center justify-center">
         <AppLogo showText={false} />
       </div>

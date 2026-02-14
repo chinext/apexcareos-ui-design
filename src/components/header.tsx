@@ -12,6 +12,7 @@ import {
   ShieldAlert,
   Receipt,
   ChevronRight,
+  PanelLeft,
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -28,7 +29,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useEffect, useState } from 'react';
 
-export function Header() {
+export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
   const [theme, setTheme] = useState('light');
   const [isClient, setIsClient] = useState(false);
 
@@ -55,6 +56,15 @@ export function Header() {
       )}
     >
       <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="rounded-full"
+          onClick={onToggleSidebar}
+        >
+          <PanelLeft className="h-5 w-5" />
+          <span className="sr-only">Toggle Sidebar</span>
+        </Button>
         <div className="relative w-full max-w-sm">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input

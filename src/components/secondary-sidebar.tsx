@@ -3,25 +3,26 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { navGroups } from '@/lib/nav-links';
 import { cn } from '@/lib/utils';
-import { HospitalSelector } from './hospital-selector';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
 import { ChevronRight } from 'lucide-react';
+import { AppLogo } from './app-logo';
 
-export function SecondarySidebar() {
+export function SecondarySidebar({ isOpen }: { isOpen: boolean }) {
   const pathname = usePathname();
 
   return (
     <aside
       className={cn(
-        'fixed inset-y-0 left-16 z-20 hidden w-64 flex-col border-r bg-card transition-transform duration-300 ease-in-out sm:flex'
+        'fixed inset-y-0 left-16 z-20 hidden w-64 flex-col border-r bg-card transition-transform duration-300 ease-in-out sm:flex',
+        isOpen ? 'translate-x-0' : '-translate-x-full'
       )}
     >
-      <div className="flex h-16 items-center border-b px-6">
-        <HospitalSelector />
+      <div className="flex h-16 items-center px-6">
+        <AppLogo />
       </div>
       <nav className="flex-1 space-y-2 overflow-y-auto p-4">
         {navGroups.map((group) => (
