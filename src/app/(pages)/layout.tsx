@@ -16,7 +16,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     activeModule && activeModule.subLinks && activeModule.subLinks.length > 0;
 
   return (
-    <div className="flex min-h-screen w-full bg-muted/40">
+    <div className="flex min-h-screen w-full bg-background">
       <MainSidebar />
       <SecondarySidebar />
       <div
