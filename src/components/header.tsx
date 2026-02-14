@@ -482,7 +482,7 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
             </CommandList>
           </TabsContent>
         </Tabs>
-        <div className="flex items-center justify-between border-t p-2 text-xs text-muted-foreground">
+        <div className="flex items-center justify-between border-t bg-muted p-3 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
             <Kbd>▲</Kbd>
             <Kbd>▼</Kbd>
