@@ -15,7 +15,7 @@ export function SecondarySidebar() {
   }
 
   return (
-    <aside className="fixed inset-y-0 left-16 z-10 hidden w-56 flex-col border-r bg-background sm:flex">
+    <aside className="fixed inset-y-0 left-16 z-10 hidden w-56 flex-col border-r bg-card sm:flex">
       <div className="flex h-16 items-center border-b px-6">
         <h2 className="text-lg font-semibold">{activeModule.label}</h2>
       </div>
