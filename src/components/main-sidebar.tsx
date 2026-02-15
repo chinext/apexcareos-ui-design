@@ -20,7 +20,7 @@ export function MainSidebar() {
       <div className="flex h-16 shrink-0 items-center justify-center">
         <AppLogo showText={false} />
       </div>
-      <nav className="flex flex-1 flex-col items-center gap-4 px-2 py-5">
+      <nav className="flex flex-1 flex-col items-center gap-4 overflow-y-auto px-2 py-5">
         <TooltipProvider>
           {navLinks.map((link) => (
             <Tooltip key={link.label} delayDuration={0}>
