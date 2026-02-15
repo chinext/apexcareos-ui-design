@@ -1,3 +1,4 @@
+'use client';
 import {
   Users,
   Calendar,
@@ -81,12 +82,24 @@ export const navGroups: NavGroup[] = [
   {
     groupLabel: 'Laboratory',
     links: [
-      { label: 'Dashboard', href: '/laboratory/dashboard', icon: LayoutDashboard },
+      {
+        label: 'Dashboard',
+        href: '/laboratory/dashboard',
+        icon: LayoutDashboard,
+      },
       { label: 'Services', href: '/laboratory/services', icon: Stethoscope },
-      { label: 'Request & Result', href: '/laboratory/request-result', icon: ClipboardList },
+      {
+        label: 'Request & Result',
+        href: '/laboratory/request-result',
+        icon: ClipboardList,
+      },
       { label: 'Specimen', href: '/laboratory/specimen', icon: TestTube },
       { label: 'Requisition', href: '/laboratory/requisition', icon: FileText },
-      { label: 'Instrument Interface', href: '/laboratory/instrument-interface', icon: Cable },
+      {
+        label: 'Instrument Interface',
+        href: '/laboratory/instrument-interface',
+        icon: Cable,
+      },
     ],
   },
   {
@@ -204,7 +217,7 @@ export const navGroups: NavGroup[] = [
           { label: 'Employee', href: '/finance/payroll/employee' },
           { label: 'Contractors', href: '/finance/payroll/contractors' },
           {
-            label: 'Worke\'s Compensation',
+            label: "Worke's Compensation",
             href: '/finance/payroll/compensation',
           },
           { label: 'payslip', href: '/finance/payroll/payslip' },
@@ -304,7 +317,44 @@ export const navGroups: NavGroup[] = [
       { label: 'Activities', href: '/activities', icon: Activity },
       { label: 'Messages', href: '/messages', icon: MessageSquare },
       { label: 'Reporting', href: '/reporting', icon: BarChart },
-      { label: 'Settings', href: '/settings', icon: Settings },
+    ],
+  },
+  {
+    groupLabel: 'System',
+    links: [
+      {
+        label: 'Users',
+        href: '/settings/users',
+        icon: Users,
+        initiallyOpen: true,
+        subLinks: [
+          { label: 'Manage', href: '/settings/users/manage' },
+          { label: 'Application', href: '/settings/users/application' },
+          { label: 'User Group', href: '/settings/users/user-group' },
+        ],
+      },
+      {
+        label: 'Settings',
+        href: '/settings/system',
+        icon: Settings,
+        initiallyOpen: true,
+        subLinks: [
+          { label: 'Profile', href: '/settings/system/profile' },
+          { label: 'System', href: '/settings/system/system' },
+          { label: 'Features', href: '/settings/system/features' },
+          { label: 'Form', href: '/settings/system/form' },
+          { label: 'Template', href: '/settings/system/template' },
+        ],
+      },
+    ],
+  },
+  {
+    groupLabel: 'Others',
+    links: [
+      { label: 'Messages', href: '/settings/messages', icon: MessageSquare },
+      { label: 'Task', href: '/settings/task', icon: ClipboardCheck },
+      { label: 'Project', href: '/settings/project', icon: Briefcase },
+      { label: 'Memo', href: '/settings/memo', icon: FileText },
     ],
   },
 ];

@@ -49,11 +49,15 @@ export function SecondarySidebar({ isOpen }: { isOpen: boolean }) {
     ) {
       return navGroups.filter((g) => g.groupLabel === 'Clinic');
     }
+    if (pathname.startsWith('/settings')) {
+      return navGroups.filter(
+        (g) => g.groupLabel === 'System' || g.groupLabel === 'Others'
+      );
+    }
     if (
       pathname.startsWith('/activities') ||
       pathname.startsWith('/messages') ||
-      pathname.startsWith('/reporting') ||
-      pathname.startsWith('/settings')
+      pathname.startsWith('/reporting')
     ) {
       return navGroups.filter((g) => g.groupLabel === 'Other');
     }
