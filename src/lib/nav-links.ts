@@ -53,6 +53,7 @@ export interface NavLink {
   label: string;
   href: string;
   icon: LucideIcon;
+  iconBgColor?: string;
   subLinks?: SubLink[];
   initiallyOpen?: boolean;
 }
@@ -65,6 +66,7 @@ export const navGroups: NavGroup[] = [
         label: 'Dashboard',
         href: '/dashboard',
         icon: LayoutDashboard,
+        iconBgColor: 'bg-sky-500',
         initiallyOpen: true,
         subLinks: [{ label: 'Admin Dashboard', href: '/dashboard' }],
       },
@@ -73,10 +75,30 @@ export const navGroups: NavGroup[] = [
   {
     groupLabel: 'Clinic',
     links: [
-      { label: 'Appointments', href: '/appointments', icon: Calendar },
-      { label: 'Doctors', href: '/hr/employees', icon: User },
-      { label: 'Services', href: '/services', icon: Stethoscope },
-      { label: 'Locations', href: '/locations', icon: Building },
+      {
+        label: 'Appointments',
+        href: '/appointments',
+        icon: Calendar,
+        iconBgColor: 'bg-green-500',
+      },
+      {
+        label: 'Doctors',
+        href: '/hr/employees',
+        icon: User,
+        iconBgColor: 'bg-orange-500',
+      },
+      {
+        label: 'Services',
+        href: '/services',
+        icon: Stethoscope,
+        iconBgColor: 'bg-indigo-500',
+      },
+      {
+        label: 'Locations',
+        href: '/locations',
+        icon: Building,
+        iconBgColor: 'bg-rose-500',
+      },
     ],
   },
   {
@@ -86,63 +108,178 @@ export const navGroups: NavGroup[] = [
         label: 'Dashboard',
         href: '/laboratory/dashboard',
         icon: LayoutDashboard,
+        iconBgColor: 'bg-teal-500',
       },
-      { label: 'Services', href: '/laboratory/services', icon: Stethoscope },
+      {
+        label: 'Services',
+        href: '/laboratory/services',
+        icon: Stethoscope,
+        iconBgColor: 'bg-cyan-500',
+      },
       {
         label: 'Request & Result',
         href: '/laboratory/request-result',
         icon: ClipboardList,
+        iconBgColor: 'bg-fuchsia-500',
       },
-      { label: 'Specimen', href: '/laboratory/specimen', icon: TestTube },
-      { label: 'Requisition', href: '/laboratory/requisition', icon: FileText },
+      {
+        label: 'Specimen',
+        href: '/laboratory/specimen',
+        icon: TestTube,
+        iconBgColor: 'bg-lime-500',
+      },
+      {
+        label: 'Requisition',
+        href: '/laboratory/requisition',
+        icon: FileText,
+        iconBgColor: 'bg-amber-500',
+      },
       {
         label: 'Instrument Interface',
         href: '/laboratory/instrument-interface',
         icon: Cable,
+        iconBgColor: 'bg-violet-500',
       },
     ],
   },
   {
     groupLabel: 'Dental',
     links: [
-      { label: 'Dashboard', href: '/dental/dashboard', icon: LayoutDashboard },
-      { label: 'Queue', href: '/dental/queue', icon: Users },
-      { label: 'Appointment', href: '/dental/appointment', icon: Calendar },
-      { label: 'Services', href: '/dental/services', icon: Stethoscope },
-      { label: 'Report', href: '/dental/report', icon: BarChart },
+      {
+        label: 'Dashboard',
+        href: '/dental/dashboard',
+        icon: LayoutDashboard,
+        iconBgColor: 'bg-sky-500',
+      },
+      {
+        label: 'Queue',
+        href: '/dental/queue',
+        icon: Users,
+        iconBgColor: 'bg-green-500',
+      },
+      {
+        label: 'Appointment',
+        href: '/dental/appointment',
+        icon: Calendar,
+        iconBgColor: 'bg-orange-500',
+      },
+      {
+        label: 'Services',
+        href: '/dental/services',
+        icon: Stethoscope,
+        iconBgColor: 'bg-indigo-500',
+      },
+      {
+        label: 'Report',
+        href: '/dental/report',
+        icon: BarChart,
+        iconBgColor: 'bg-rose-500',
+      },
     ],
   },
   {
     groupLabel: 'Marketing',
     links: [
-      { label: 'Dashboard', href: '/crm/dashboard', icon: LayoutDashboard },
-      { label: 'Lead', href: '/crm/lead', icon: UserPlus },
-      { label: 'Opportunity', href: '/crm/opportunity', icon: Briefcase },
-      { label: 'Retainer', href: '/crm/retainer', icon: FileText },
-      { label: 'Referral', href: '/crm/referral', icon: Users },
-      { label: 'Report', href: '/crm/report', icon: BarChart },
-      { label: 'Campaign', href: '/crm/campaign', icon: Volume2 },
-      { label: 'Patients', href: '/crm/patients', icon: Users },
+      {
+        label: 'Dashboard',
+        href: '/crm/dashboard',
+        icon: LayoutDashboard,
+        iconBgColor: 'bg-teal-500',
+      },
+      {
+        label: 'Lead',
+        href: '/crm/lead',
+        icon: UserPlus,
+        iconBgColor: 'bg-cyan-500',
+      },
+      {
+        label: 'Opportunity',
+        href: '/crm/opportunity',
+        icon: Briefcase,
+        iconBgColor: 'bg-fuchsia-500',
+      },
+      {
+        label: 'Retainer',
+        href: '/crm/retainer',
+        icon: FileText,
+        iconBgColor: 'bg-lime-500',
+      },
+      {
+        label: 'Referral',
+        href: '/crm/referral',
+        icon: Users,
+        iconBgColor: 'bg-amber-500',
+      },
+      {
+        label: 'Report',
+        href: '/crm/report',
+        icon: BarChart,
+        iconBgColor: 'bg-violet-500',
+      },
+      {
+        label: 'Campaign',
+        href: '/crm/campaign',
+        icon: Volume2,
+        iconBgColor: 'bg-sky-500',
+      },
+      {
+        label: 'Patients',
+        href: '/crm/patients',
+        icon: Users,
+        iconBgColor: 'bg-green-500',
+      },
     ],
   },
   {
     groupLabel: 'Human Resources',
     links: [
-      { label: 'All Personnel', href: '/hr/employees', icon: Users },
-      { label: 'Staff exit', href: '/hr/staff-exit', icon: LogOut },
-      { label: 'Personnel Training', href: '/hr/training', icon: UserCog },
+      {
+        label: 'All Personnel',
+        href: '/hr/employees',
+        icon: Users,
+        iconBgColor: 'bg-orange-500',
+      },
+      {
+        label: 'Staff exit',
+        href: '/hr/staff-exit',
+        icon: LogOut,
+        iconBgColor: 'bg-indigo-500',
+      },
+      {
+        label: 'Personnel Training',
+        href: '/hr/training',
+        icon: UserCog,
+        iconBgColor: 'bg-rose-500',
+      },
       {
         label: 'Department/Organogram',
         href: '/hr/organogram',
         icon: Network,
+        iconBgColor: 'bg-teal-500',
       },
-      { label: 'Leaves', href: '/hr/leave', icon: CalendarOff },
-      { label: 'Holidays', href: '/hr/holidays', icon: Calendar },
-      { label: 'Attendance', href: '/hr/attendance', icon: ClipboardCheck },
+      {
+        label: 'Leaves',
+        href: '/hr/leave',
+        icon: CalendarOff,
+        iconBgColor: 'bg-cyan-500',
+      },
+      {
+        label: 'Holidays',
+        href: '/hr/holidays',
+        icon: Calendar,
+        iconBgColor: 'bg-fuchsia-500',
+      },
+      {
+        label: 'Attendance',
+        href: '/hr/attendance',
+        icon: ClipboardCheck,
+        iconBgColor: 'bg-lime-500',
+      },
       {
         label: 'Monthly Schedule',
         href: '/hr/schedule',
         icon: CalendarDays,
+        iconBgColor: 'bg-amber-500',
       },
     ],
   },
@@ -153,6 +290,7 @@ export const navGroups: NavGroup[] = [
         label: 'Sales',
         href: '/finance/sales',
         icon: TrendingUp,
+        iconBgColor: 'bg-green-500',
         initiallyOpen: true,
         subLinks: [
           { label: 'Dashboard', href: '/finance/sales/dashboard' },
@@ -196,6 +334,7 @@ export const navGroups: NavGroup[] = [
         label: 'Purchase',
         href: '/finance/purchase',
         icon: ShoppingCart,
+        iconBgColor: 'bg-orange-500',
         subLinks: [
           { label: 'Vendor', href: '/finance/purchase/vendor' },
           { label: 'Expenses', href: '/finance/purchase/expenses' },
@@ -208,11 +347,17 @@ export const navGroups: NavGroup[] = [
           { label: 'Vendor Credit', href: '/finance/purchase/vendor-credit' },
         ],
       },
-      { label: 'Cash Flow', href: '/finance/cash-flow', icon: ArrowLeftRight },
+      {
+        label: 'Cash Flow',
+        href: '/finance/cash-flow',
+        icon: ArrowLeftRight,
+        iconBgColor: 'bg-blue-500',
+      },
       {
         label: 'Payroll',
         href: '/finance/payroll',
         icon: Users,
+        iconBgColor: 'bg-indigo-500',
         subLinks: [
           { label: 'Employee', href: '/finance/payroll/employee' },
           { label: 'Contractors', href: '/finance/payroll/contractors' },
@@ -228,6 +373,7 @@ export const navGroups: NavGroup[] = [
         label: 'Accounting',
         href: '/finance/accounting',
         icon: Book,
+        iconBgColor: 'bg-rose-500',
         subLinks: [
           {
             label: 'Manual Journal',
@@ -301,6 +447,7 @@ export const navGroups: NavGroup[] = [
         label: 'Report',
         href: '/finance/report',
         icon: BarChart,
+        iconBgColor: 'bg-amber-500',
         subLinks: [
           { label: 'Reports', href: '/finance/report/reports' },
           {
@@ -314,9 +461,24 @@ export const navGroups: NavGroup[] = [
   {
     groupLabel: 'Other',
     links: [
-      { label: 'Activities', href: '/activities', icon: Activity },
-      { label: 'Messages', href: '/messages', icon: MessageSquare },
-      { label: 'Reporting', href: '/reporting', icon: BarChart },
+      {
+        label: 'Activities',
+        href: '/activities',
+        icon: Activity,
+        iconBgColor: 'bg-violet-500',
+      },
+      {
+        label: 'Messages',
+        href: '/messages',
+        icon: MessageSquare,
+        iconBgColor: 'bg-teal-500',
+      },
+      {
+        label: 'Reporting',
+        href: '/reporting',
+        icon: BarChart,
+        iconBgColor: 'bg-cyan-500',
+      },
     ],
   },
   {
@@ -326,6 +488,7 @@ export const navGroups: NavGroup[] = [
         label: 'Users',
         href: '/settings/users',
         icon: Users,
+        iconBgColor: 'bg-fuchsia-500',
         initiallyOpen: true,
         subLinks: [
           { label: 'Manage', href: '/settings/users/manage' },
@@ -337,6 +500,7 @@ export const navGroups: NavGroup[] = [
         label: 'Settings',
         href: '/settings/system',
         icon: Settings,
+        iconBgColor: 'bg-lime-500',
         initiallyOpen: true,
         subLinks: [
           { label: 'Profile', href: '/settings/system/profile' },
@@ -351,63 +515,117 @@ export const navGroups: NavGroup[] = [
   {
     groupLabel: 'Others',
     links: [
-      { label: 'Messages', href: '/settings/messages', icon: MessageSquare },
-      { label: 'Task', href: '/settings/task', icon: ClipboardCheck },
-      { label: 'Project', href: '/settings/project', icon: Briefcase },
-      { label: 'Memo', href: '/settings/memo', icon: FileText },
+      {
+        label: 'Messages',
+        href: '/settings/messages',
+        icon: MessageSquare,
+        iconBgColor: 'bg-amber-500',
+      },
+      {
+        label: 'Task',
+        href: '/settings/task',
+        icon: ClipboardCheck,
+        iconBgColor: 'bg-violet-500',
+      },
+      {
+        label: 'Project',
+        href: '/settings/project',
+        icon: Briefcase,
+        iconBgColor: 'bg-sky-500',
+      },
+      {
+        label: 'Memo',
+        href: '/settings/memo',
+        icon: FileText,
+        iconBgColor: 'bg-green-500',
+      },
     ],
   },
 ];
 
 export const navLinks: NavLink[] = [
-  { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { label: 'Appointments', href: '/appointments', icon: Calendar },
-  { label: 'Medical', href: '/medical', icon: Stethoscope },
+  {
+    label: 'Dashboard',
+    href: '/dashboard',
+    icon: LayoutDashboard,
+    iconBgColor: 'bg-sky-500',
+  },
+  {
+    label: 'Appointments',
+    href: '/appointments',
+    icon: Calendar,
+    iconBgColor: 'bg-green-500',
+  },
+  {
+    label: 'Medical',
+    href: '/medical',
+    icon: Stethoscope,
+    iconBgColor: 'bg-rose-500',
+  },
   {
     label: 'Pharmacy',
     href: '/pharmacy',
     icon: Stethoscope,
+    iconBgColor: 'bg-orange-500',
   },
   {
     label: 'Laboratory',
     href: '/laboratory',
     icon: FlaskConical,
+    iconBgColor: 'bg-indigo-500',
   },
   {
     label: 'Radiology',
     href: '/radiology',
     icon: Radiation,
+    iconBgColor: 'bg-amber-500',
   },
-  { label: 'Dental', href: '/dental', icon: Smile },
-  { label: 'Nurse', href: '/nurse', icon: UserPlus },
+  {
+    label: 'Dental',
+    href: '/dental',
+    icon: Smile,
+    iconBgColor: 'bg-violet-500',
+  },
+  {
+    label: 'Nurse',
+    href: '/nurse',
+    icon: UserPlus,
+    iconBgColor: 'bg-teal-500',
+  },
   {
     label: 'Finance',
     href: '/finance',
     icon: CreditCard,
+    iconBgColor: 'bg-cyan-500',
   },
   {
     label: 'Inventory',
     href: '/inventory',
     icon: Stethoscope,
+    iconBgColor: 'bg-fuchsia-500',
   },
   {
     label: 'HRM',
     href: '/hr',
     icon: UserRoundCog,
+    iconBgColor: 'bg-lime-500',
   },
   {
     label: 'CRM',
     href: '/crm',
     icon: Briefcase,
+    iconBgColor: 'bg-pink-500',
   },
   {
     label: 'Reporting',
     href: '/reporting',
     icon: BarChart,
+    iconBgColor: 'bg-sky-500',
   },
   {
     label: 'General',
     href: '/settings',
     icon: Settings,
+    iconBgColor: 'bg-green-500',
   },
 ];
