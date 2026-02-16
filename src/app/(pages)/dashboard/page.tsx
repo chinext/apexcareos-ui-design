@@ -20,10 +20,10 @@ import { Button } from '@/components/ui/button';
 import {
   kpis,
   appointmentStats,
-  popularDoctors,
   departmentPatientChartData,
   doctorSchedule,
   allAppointments,
+  incomeByTreatment,
 } from '@/lib/data';
 import {
   Bar,
@@ -41,6 +41,13 @@ import {
 } from 'recharts';
 import { PageHeader } from '@/components/page-header';
 import { CalendarDays, Plus } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const statusVariant: { [key: string]: 'default' | 'secondary' | 'destructive' | 'outline' } = {
   Confirmed: 'default',
@@ -150,43 +157,47 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Popular Doctors */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Popular Doctors</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {popularDoctors.map((doctor) => (
-              <div key={doctor.name} className="flex items-center gap-4">
-                <Avatar className="h-10 w-10">
-                  <AvatarImage src={doctor.avatar} alt={doctor.name} />
-                  <AvatarFallback>{doctor.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                  <p className="text-sm font-medium">{doctor.name}</p>
-                  <p className="text-xs text-muted-foreground">{doctor.specialty}</p>
-                </div>
-                <p className="text-sm text-muted-foreground">{doctor.bookings} Bookings</p>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-        
         {/* Top 3 Departments */}
          <Card>
-          <CardHeader>
-            <CardTitle>Top Departments</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-base font-medium">Top 3 Departments</CardTitle>
+            <Select defaultValue="weekly">
+              <SelectTrigger className="h-7 w-24 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="weekly">Weekly</SelectItem>
+                <SelectItem value="monthly">Monthly</SelectItem>
+                <SelectItem value="yearly">Yearly</SelectItem>
+              </SelectContent>
+            </Select>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
-                <Pie data={departmentPatientChartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
-                   {departmentPatientChartData.map((entry, index) => (
+                <Pie
+                  data={departmentPatientChartData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={50}
+                  outerRadius={80}
+                  labelLine={false}
+                  paddingAngle={2}
+                >
+                  {departmentPatientChartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} />
                   ))}
                 </Pie>
-                <Tooltip />
-                <Legend iconType="circle" iconSize={8} />
+                <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--background))', borderColor: 'hsl(var(--border))' }} />
+                <Legend iconType="circle" iconSize={8} wrapperStyle={{ paddingTop: '20px' }} />
+                <text x="50%" y="45%" textAnchor="middle" dominantBaseline="middle" className="fill-muted-foreground text-sm">
+                  Total Patient
+                </text>
+                <text x="50%" y="60%" textAnchor="middle" dominantBaseline="middle" className="fill-foreground text-2xl font-bold">
+                  {departmentPatientChartData.reduce((acc, curr) => acc + curr.value, 0)}
+                </text>
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
@@ -194,18 +205,66 @@ export default function DashboardPage() {
 
         {/* Doctors Schedule */}
         <Card>
-          <CardHeader>
-            <CardTitle>Doctors Schedule</CardTitle>
-            <CardDescription>Available: 48, Unavailable: 28, Leave: 12</CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-base font-medium">Doctors Schedule</CardTitle>
+            <Button variant="link" size="sm" className="h-auto p-0">View All</Button>
           </CardHeader>
-          <CardContent className="space-y-2">
-            {doctorSchedule.map((doctor) => (
-              <div key={doctor.name} className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium">{doctor.name}</p>
-                  <p className="text-xs text-muted-foreground">{doctor.specialty}</p>
+          <CardContent>
+            <div className="mb-4 grid grid-cols-3 divide-x text-center">
+              <div>
+                <p className="text-xs text-muted-foreground">Available</p>
+                <p className="text-lg font-bold">48</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Unavailable</p>
+                <p className="text-lg font-bold">28</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Leave</p>
+                <p className="text-lg font-bold">12</p>
+              </div>
+            </div>
+            <div className="space-y-3">
+              {doctorSchedule.map((doctor) => (
+                <div key={doctor.name} className="flex items-center gap-3">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage src={doctor.avatar} alt={doctor.name} />
+                    <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">{doctor.name}</p>
+                    <p className="text-xs text-muted-foreground">{doctor.specialty}</p>
+                  </div>
+                  <Button size="sm">Book Now</Button>
                 </div>
-                <Button size="sm">Book Now</Button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Income By Treatment */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-base font-medium">Income By Treatment</CardTitle>
+            <Select defaultValue="weekly">
+              <SelectTrigger className="h-7 w-24 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="weekly">Weekly</SelectItem>
+                <SelectItem value="monthly">Monthly</SelectItem>
+                <SelectItem value="yearly">Yearly</SelectItem>
+              </SelectContent>
+            </Select>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {incomeByTreatment.map((item) => (
+              <div key={item.treatment} className="flex items-center">
+                <div className="flex-1">
+                  <p className="text-sm font-medium">{item.treatment}</p>
+                  <p className="text-xs text-muted-foreground">{item.appointments.toLocaleString()} Appointments</p>
+                </div>
+                <p className="text-sm font-bold">${item.income.toLocaleString()}</p>
               </div>
             ))}
           </CardContent>

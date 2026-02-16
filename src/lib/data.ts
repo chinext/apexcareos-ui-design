@@ -109,17 +109,17 @@ export const departmentPatientChartData = [
 ];
 
 export const doctorSchedule = [
-  { name: 'Dr. Sarah Johnson', specialty: 'Orthopedic Surgeon' },
-  { name: 'Dr. Emily Carter', specialty: 'Pediatrician' },
-  { name: 'Dr. David Lee', specialty: 'Gynecologist' },
-  { name: 'Dr. Michael Smith', specialty: 'Cardiologist' },
+  { name: 'Dr. Sarah Johnson', specialty: 'Orthopedic Surgeon', avatar: 'https://i.pravatar.cc/40?u=sarah' },
+  { name: 'Dr. Emily Carter', specialty: 'Pediatrician', avatar: 'https://i.pravatar.cc/40?u=emily' },
+  { name: 'Dr. David Lee', specialty: 'Gynecologist', avatar: 'https://i.pravatar.cc/40?u=david' },
+  { name: 'Dr. Michael Smith', specialty: 'Cardiologist', avatar: 'https://i.pravatar.cc/40?u=michael' },
 ];
 
 
 export const incomeByTreatment = [
-  { treatment: 'Cardiology', appointments: 4558, income: 5985 },
+  { treatment: 'Cardiology', appointments: 4556, income: 5985 },
   { treatment: 'Radiology', appointments: 4125, income: 5194 },
-  { treatment: 'Dental Surgery', appointments: 1795, income: 2716 },
+  { treatment: 'Dental Surgery', appointments: 1796, income: 2716 },
   { treatment: 'Orthopaedics', appointments: 3827, income: 4682 },
   { treatment: 'General Medicine', appointments: 9894, income: 9450 },
 ];
