@@ -1,37 +1,61 @@
-import { User, Users, Calendar, DollarSign } from 'lucide-react';
+import { User, Users, Calendar, DollarSign, TrendingUp, TrendingDown } from 'lucide-react';
 
 export const kpis = [
   {
     title: 'Doctors',
     value: '247',
     icon: User,
-    change: '+20%',
-    changeColor: 'text-green-500',
-    duration: 'in last 7 days',
+    iconBg: 'bg-indigo-500',
+    change: '+95%',
+    changeIcon: TrendingUp,
+    changeColor: 'text-green-600',
+    changeBg: 'bg-green-100 dark:bg-green-900/50',
+    duration: 'in last 7 Days',
+    chartType: 'bar',
+    chartData: [ { v: 5 }, { v: 7 }, { v: 10 }, { v: 8 }, { v: 15 }, { v: 12 } ],
+    chartColor: 'hsl(var(--primary))'
   },
   {
     title: 'Patients',
-    value: '4178',
+    value: '4,178',
     icon: Users,
-    change: '-12%',
-    changeColor: 'text-red-500',
-    duration: 'in last 7 days',
+    iconBg: 'bg-red-500',
+    change: '-15%',
+    changeIcon: TrendingDown,
+    changeColor: 'text-red-600',
+    changeBg: 'bg-red-100 dark:bg-red-900/50',
+    duration: 'in last 7 Days',
+    chartType: 'bar',
+    chartData: [ { v: 15 }, { v: 12 }, { v: 8 }, { v: 10 }, { v: 7 }, { v: 5 } ],
+    chartColor: 'hsl(var(--primary))'
   },
   {
-    title: 'Appointments',
-    value: '1278',
+    title: 'Appointment',
+    value: '12,178',
     icon: Calendar,
-    change: '+5%',
-    changeColor: 'text-green-500',
-    duration: 'in last 7 days',
+    iconBg: 'bg-sky-500',
+    change: '+25%',
+    changeIcon: TrendingUp,
+    changeColor: 'text-green-600',
+    changeBg: 'bg-green-100 dark:bg-green-900/50',
+    duration: 'in last 7 Days',
+    chartType: 'line',
+    chartData: [ { v: 5 }, { v: 7 }, { v: 6 }, { v: 9 }, { v: 8 }, { v: 11 } ],
+    chartColor: '#f87171'
   },
   {
     title: 'Revenue',
     value: '$55,240',
     icon: DollarSign,
-    change: '+8%',
-    changeColor: 'text-green-500',
-    duration: 'in last 7 days',
+    iconBg: 'bg-emerald-500',
+    change: '+25%',
+    changeIcon: TrendingUp,
+    changeColor: 'text-green-600',
+    changeBg: 'bg-green-100 dark:bg-green-900/50',
+    duration: 'in last 7 Days',
+    chartType: 'line',
+    chartData: [ { v: 5 }, { v: 6 }, { v: 8 }, { v: 7 }, { v: 9 }, { v: 12 } ],
+    chartColor: '#34d399'
   },
 ];
 

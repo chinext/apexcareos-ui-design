@@ -23,7 +23,6 @@ import {
   popularDoctors,
   departmentPatientChartData,
   doctorSchedule,
-  incomeByTreatment,
   allAppointments,
 } from '@/lib/data';
 import {
@@ -37,6 +36,8 @@ import {
   Pie,
   Cell,
   Legend,
+  AreaChart,
+  Area,
 } from 'recharts';
 import { PageHeader } from '@/components/page-header';
 import { CalendarDays, Plus } from 'lucide-react';
@@ -66,15 +67,44 @@ export default function DashboardPage() {
       {/* KPI Cards */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {kpis.map((kpi) => (
-          <Card key={kpi.title}>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">{kpi.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex items-center justify-between">
-              <div className="text-3xl font-bold">{kpi.value}</div>
+          <Card key={kpi.title} className="relative overflow-hidden">
+             <div
+              className="absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-20"
+              style={{ background: `radial-gradient(circle at center, ${kpi.chartColor} 0%, transparent 60%)`}}
+            />
+            <CardContent className="flex justify-between p-6">
+              <div>
+                <div className={`flex h-10 w-10 items-center justify-center rounded-full ${kpi.iconBg}`}>
+                  <kpi.icon className="h-6 w-6 text-white" />
+                </div>
+                <p className="mt-4 text-sm text-muted-foreground">{kpi.title}</p>
+                <p className="text-2xl font-bold">{kpi.value}</p>
+              </div>
               <div className="flex flex-col items-end">
-                <div className={`text-xs font-semibold ${kpi.changeColor}`}>{kpi.change}</div>
-                <div className="text-xs text-muted-foreground">{kpi.duration}</div>
+                <div className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-xs ${kpi.changeBg}`}>
+                  <kpi.changeIcon className={`h-3 w-3 ${kpi.changeColor}`} />
+                  <span className={kpi.changeColor}>{kpi.change}</span>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">{kpi.duration}</p>
+                <div className="mt-2 h-12 w-24">
+                  <ResponsiveContainer width="100%" height="100%">
+                    {kpi.chartType === 'bar' ? (
+                      <BarChart data={kpi.chartData}>
+                        <Bar dataKey="v" fill={kpi.chartColor} radius={2} />
+                      </BarChart>
+                    ) : (
+                      <AreaChart data={kpi.chartData} margin={{ top: 5, right: 0, left: 0, bottom: 0 }}>
+                        <defs>
+                          <linearGradient id={`color-${kpi.title.replace(/\s/g, '')}`} x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor={kpi.chartColor} stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor={kpi.chartColor} stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <Area type="monotone" dataKey="v" stroke={kpi.chartColor} strokeWidth={2} fillOpacity={1} fill={`url(#color-${kpi.title.replace(/\s/g, '')})`} />
+                      </AreaChart>
+                    )}
+                  </ResponsiveContainer>
+                </div>
               </div>
             </CardContent>
           </Card>
