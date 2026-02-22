@@ -13,8 +13,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
 } from '@tanstack/react-table';
 import { format, differenceInYears } from 'date-fns';
 import {
@@ -29,6 +27,7 @@ import {
   FileDown,
   ArrowRightLeft,
   Combine,
+  Search,
 } from 'lucide-react';
 import * as xlsx from 'xlsx';
 
@@ -63,7 +62,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
 import { PageHeader } from '@/components/page-header';
 import { patientsList, patientStats } from '@/lib/data';
 import { PatientRegistrationDrawer } from '@/components/patient-registration-drawer';
@@ -255,9 +253,6 @@ const columns: ColumnDef<Patient>[] = [
         {row.original.status}
       </Badge>
     ),
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
   },
 ];
 
@@ -271,19 +266,27 @@ export default function PatientsPage() {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [isFilterOpen, setIsFilterOpen] = React.useState(false);
   const [advancedFilters, setAdvancedFilters] = React.useState<Filter[]>([
     { id: 1, column: '', operator: 'contains', value: '' },
   ]);
+  const [appliedAdvancedFilters, setAppliedAdvancedFilters] = React.useState<Filter[]>([]);
+
+  React.useEffect(() => {
+    if(isFilterOpen) {
+        setAdvancedFilters(appliedAdvancedFilters.length > 0 ? JSON.parse(JSON.stringify(appliedAdvancedFilters)) : [{ id: 1, column: '', operator: 'contains', value: '' }]);
+    }
+  }, [isFilterOpen, appliedAdvancedFilters]);
   
-  const filteredData = React.useMemo(() => {
+  const advancedFilteredData = React.useMemo(() => {
     return data.filter(row => {
-      if (advancedFilters.length === 0 || (advancedFilters.length === 1 && !advancedFilters[0].value)) {
+      if (appliedAdvancedFilters.length === 0 || (appliedAdvancedFilters.length === 1 && !appliedAdvancedFilters[0].value)) {
         return true;
       }
 
       let result = true;
-      for (let i = 0; i < advancedFilters.length; i++) {
-        const filter = advancedFilters[i];
+      for (let i = 0; i < appliedAdvancedFilters.length; i++) {
+        const filter = appliedAdvancedFilters[i];
         if (!filter.column || !filter.value) {
             if (i === 0) result = true;
             continue;
@@ -320,11 +323,11 @@ export default function PatientsPage() {
       }
       return result;
     });
-  }, [data, advancedFilters]);
+  }, [data, appliedAdvancedFilters]);
 
 
   const table = useReactTable({
-    data: filteredData,
+    data: advancedFilteredData,
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -334,8 +337,6 @@ export default function PatientsPage() {
     onGlobalFilterChange: setGlobalFilter,
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
     state: {
       sorting,
       columnVisibility,
@@ -396,7 +397,21 @@ export default function PatientsPage() {
 
   const removeFilter = (id: number) => {
     const newFilters = advancedFilters.filter((filter) => filter.id !== id);
-    setAdvancedFilters(newFilters);
+    if(newFilters.length === 0){
+        setAdvancedFilters([{ id: 1, column: '', operator: 'contains', value: '' }]);
+    } else {
+        setAdvancedFilters(newFilters);
+    }
+  };
+
+  const handleApplyFilters = () => {
+    setAppliedAdvancedFilters(advancedFilters);
+    setIsFilterOpen(false);
+  };
+
+  const handleClearAllFilters = () => {
+    setAdvancedFilters([{ id: 1, column: '', operator: 'contains', value: '' }]);
+    setAppliedAdvancedFilters([]);
   };
 
   return (
@@ -446,7 +461,7 @@ export default function PatientsPage() {
               onChange={(event) => setGlobalFilter(event.target.value)}
               className="h-9 max-w-sm"
             />
-            <Popover>
+            <Popover open={isFilterOpen} onOpenChange={setIsFilterOpen}>
               <PopoverTrigger asChild>
                 <Button variant="outline" size="sm" className="h-9">
                   <ListFilter className="mr-2 h-4 w-4" />
@@ -455,7 +470,7 @@ export default function PatientsPage() {
               </PopoverTrigger>
               <PopoverContent className="w-[580px]" align="end">
                 <div className="space-y-4 p-2">
-                  <h4 className="font-medium leading-none text-sm">Filter Builder</h4>
+                  <h4 className="text-sm font-medium leading-none">Filter Builder</h4>
                   <div className="space-y-2">
                     {advancedFilters.map((filter, index) => (
                       <div key={filter.id} className="flex items-center gap-1">
@@ -541,9 +556,18 @@ export default function PatientsPage() {
                       </div>
                     ))}
                   </div>
-                  <Button variant="link" size="sm" className="text-xs" onClick={addFilter}>
+                  <Button variant="link" size="sm" className="px-1 text-xs" onClick={addFilter}>
                     + Add filter
                   </Button>
+                </div>
+                <div className="flex items-center justify-end gap-2 border-t p-2">
+                    <Button variant="ghost" size="sm" onClick={handleClearAllFilters}>
+                        Clear all
+                    </Button>
+                    <Button size="sm" onClick={handleApplyFilters}>
+                        <Search className="mr-2 h-4 w-4" />
+                        Search
+                    </Button>
                 </div>
               </PopoverContent>
             </Popover>
