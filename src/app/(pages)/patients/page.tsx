@@ -13,6 +13,8 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
 } from '@tanstack/react-table';
 import { format, differenceInYears } from 'date-fns';
 import {
@@ -23,6 +25,10 @@ import {
   TrendingDown,
   UserPlus,
   ListFilter,
+  X,
+  FileDown,
+  ArrowRightLeft,
+  Combine,
 } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -34,6 +40,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import {
   Table,
@@ -63,154 +70,21 @@ import { cn } from '@/lib/utils';
 
 type Patient = (typeof patientsList)[0];
 
+type Filter = {
+  id: number;
+  column: keyof Patient | '';
+  operator: string;
+  value: string;
+};
+
+const operators = ['contains', 'equals', 'does not contain'];
+
 const statusVariant: {
   [key: string]: 'default' | 'secondary' | 'destructive' | 'outline';
 } = {
   Active: 'default',
   Inactive: 'destructive',
 };
-
-export const columns: ColumnDef<Patient>[] = [
-  {
-    accessorKey: 'name',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Patient
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="flex items-center gap-3">
-        <Avatar className="h-10 w-10">
-          <AvatarImage src={row.original.avatar} alt={row.original.name} />
-          <AvatarFallback>
-            {row.original.name
-              .split(' ')
-              .map((n) => n[0])
-              .join('')}
-          </AvatarFallback>
-        </Avatar>
-        <div>
-          <div className="font-medium">{row.original.name}</div>
-          <div className="text-xs text-muted-foreground">{row.original.id}</div>
-        </div>
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'phone',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Contact
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => (
-      <div>
-        <div>{row.original.phone}</div>
-        <div className="text-xs text-muted-foreground">
-          {row.original.email}
-        </div>
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'dob',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Date of Birth
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => {
-      const age = differenceInYears(new Date(), new Date(row.original.dob));
-      return (
-        <div>
-          <div>{format(new Date(row.original.dob), 'PPP')}</div>
-          <div className="text-xs text-muted-foreground">{age} years</div>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'registeredDate',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Date Registered
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => format(new Date(row.original.registeredDate), 'PPP'),
-  },
-  {
-    accessorKey: 'gender',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Gender
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-  },
-  {
-    accessorKey: 'account',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Account
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-  },
-  {
-    accessorKey: 'lastVisit',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Last Visit
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => format(new Date(row.original.lastVisit), 'PPP'),
-  },
-  {
-    accessorKey: 'status',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Status
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => (
-      <Badge variant={statusVariant[row.original.status] || 'default'}>
-        {row.original.status}
-      </Badge>
-    ),
-  },
-];
 
 export default function PatientsPage() {
   const router = useRouter();
@@ -223,6 +97,182 @@ export default function PatientsPage() {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [advancedFilters, setAdvancedFilters] = React.useState<Filter[]>([
+    { id: 1, column: '', operator: 'contains', value: '' },
+  ]);
+
+  const columns: ColumnDef<Patient>[] = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+          className="translate-y-[2px]"
+        />
+      ),
+      cell: ({ row }) => (
+        <div onClick={(e) => e.stopPropagation()}>
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+            className="translate-y-[2px]"
+          />
+        </div>
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: 'name',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            Patient
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="flex items-center gap-3">
+          <Avatar className="h-10 w-10">
+            <AvatarImage src={row.original.avatar} alt={row.original.name} />
+            <AvatarFallback>
+              {row.original.name
+                .split(' ')
+                .map((n) => n[0])
+                .join('')}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <div className="font-medium">{row.original.name}</div>
+            <div className="text-xs text-muted-foreground">
+              {row.original.id}
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'phone',
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Contact
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <div>
+          <div>{row.original.phone}</div>
+          <div className="text-xs text-muted-foreground">
+            {row.original.email}
+          </div>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'dob',
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Date of Birth
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const age = differenceInYears(new Date(), new Date(row.original.dob));
+        return (
+          <div>
+            <div>{format(new Date(row.original.dob), 'PPP')}</div>
+            <div className="text-xs text-muted-foreground">{age} years</div>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'registeredDate',
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Date Registered
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => format(new Date(row.original.registeredDate), 'PPP'),
+    },
+    {
+      accessorKey: 'gender',
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Gender
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+    },
+    {
+      accessorKey: 'account',
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Account
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+    },
+    {
+      accessorKey: 'lastVisit',
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Last Visit
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => format(new Date(row.original.lastVisit), 'PPP'),
+    },
+    {
+      accessorKey: 'status',
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <Badge variant={statusVariant[row.original.status] || 'default'}>
+          {row.original.status}
+        </Badge>
+      ),
+      filterFn: (row, id, value) => {
+        return value.includes(row.getValue(id));
+      },
+    },
+  ];
 
   const table = useReactTable({
     data,
@@ -236,6 +286,8 @@ export default function PatientsPage() {
     onGlobalFilterChange: setGlobalFilter,
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
     state: {
       sorting,
       columnFilters,
@@ -244,6 +296,41 @@ export default function PatientsPage() {
       globalFilter,
     },
   });
+
+  const handleAdvancedFilterChange = (
+    id: number,
+    field: keyof Filter,
+    value: string
+  ) => {
+    const newFilters = advancedFilters.map((filter) =>
+      filter.id === id ? { ...filter, [field]: value } : filter
+    );
+    setAdvancedFilters(newFilters);
+    applyAdvancedFilters(newFilters);
+  };
+
+  const addFilter = () => {
+    setAdvancedFilters([
+      ...advancedFilters,
+      { id: Date.now(), column: '', operator: 'contains', value: '' },
+    ]);
+  };
+
+  const removeFilter = (id: number) => {
+    const newFilters = advancedFilters.filter((filter) => filter.id !== id);
+    setAdvancedFilters(newFilters);
+    applyAdvancedFilters(newFilters);
+  };
+
+  const applyAdvancedFilters = (filters: Filter[]) => {
+    const newColumnFilters = filters
+      .filter((f) => f.column && f.value)
+      .map((f) => ({
+        id: f.column,
+        value: f.value,
+      }));
+    setColumnFilters(newColumnFilters);
+  };
 
   return (
     <main className="flex-1 space-y-6 p-4 md:p-6">
@@ -258,7 +345,9 @@ export default function PatientsPage() {
         {patientStats.map((stat, index) => (
           <Card key={index}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {stat.title}
+              </CardTitle>
               <stat.icon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -297,59 +386,106 @@ export default function PatientsPage() {
                   Filters
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80" align="end">
-                <div className="space-y-4">
-                  <h4 className="font-medium leading-none">Advanced Filters</h4>
+              <PopoverContent className="w-[500px]" align="end">
+                <div className="space-y-4 p-2">
+                  <h4 className="font-medium leading-none">Filter Builder</h4>
                   <div className="space-y-2">
-                    <Label>Status</Label>
-                    <Select
-                      value={
-                        (table.getColumn('status')?.getFilterValue() as string) ??
-                        'all'
-                      }
-                      onValueChange={(value) =>
-                        table
-                          .getColumn('status')
-                          ?.setFilterValue(value === 'all' ? undefined : value)
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Statuses</SelectItem>
-                        <SelectItem value="Active">Active</SelectItem>
-                        <SelectItem value="Inactive">Inactive</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    {advancedFilters.map((filter, index) => (
+                      <div key={filter.id} className="flex items-center gap-2">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFilter(filter.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                        <span className="text-sm">Where</span>
+                        <Select
+                          value={filter.column}
+                          onValueChange={(value) =>
+                            handleAdvancedFilterChange(
+                              filter.id,
+                              'column',
+                              value
+                            )
+                          }
+                        >
+                          <SelectTrigger className="w-32">
+                            <SelectValue placeholder="Column" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="name">Name</SelectItem>
+                            <SelectItem value="email">Email</SelectItem>
+                            <SelectItem value="status">Status</SelectItem>
+                            <SelectItem value="gender">Gender</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <Select
+                          value={filter.operator}
+                          onValueChange={(value) =>
+                            handleAdvancedFilterChange(
+                              filter.id,
+                              'operator',
+                              value
+                            )
+                          }
+                        >
+                          <SelectTrigger className="w-32">
+                            <SelectValue placeholder="Operator" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {operators.map((op) => (
+                              <SelectItem key={op} value={op}>
+                                {op}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Input
+                          className="flex-1"
+                          placeholder="Value"
+                          value={filter.value}
+                          onChange={(e) =>
+                            handleAdvancedFilterChange(
+                              filter.id,
+                              'value',
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+                    ))}
                   </div>
-                  <div className="space-y-2">
-                    <Label>Gender</Label>
-                    <Select
-                       value={
-                        (table.getColumn('gender')?.getFilterValue() as string) ??
-                        'all'
-                      }
-                      onValueChange={(value) =>
-                        table
-                          .getColumn('gender')
-                          ?.setFilterValue(value === 'all' ? undefined : value)
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select gender" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Genders</SelectItem>
-                        <SelectItem value="Male">Male</SelectItem>
-                        <SelectItem value="Female">Female</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  <Button variant="link" size="sm" onClick={addFilter}>
+                    + Add filter
+                  </Button>
                 </div>
               </PopoverContent>
             </Popover>
           </div>
+
+          {table.getFilteredSelectedRowModel().rows.length > 0 && (
+            <div className="mb-4 flex items-center gap-2 rounded-lg bg-muted p-2">
+              <span className="text-sm font-medium">
+                {table.getFilteredSelectedRowModel().rows.length} selected
+              </span>
+              <div className="ml-auto flex items-center gap-2">
+                <Button variant="outline" size="sm">
+                  <FileDown className="mr-2 h-4 w-4" />
+                  Export
+                </Button>
+                <Button variant="outline" size="sm">
+                  <ArrowRightLeft className="mr-2 h-4 w-4" />
+                  Transfer
+                </Button>
+                <Button variant="outline" size="sm">
+                  <Combine className="mr-2 h-4 w-4" />
+                  Merge
+                </Button>
+              </div>
+            </div>
+          )}
+
           <div className="rounded-md border">
             <Table>
               <TableHeader>
@@ -376,7 +512,9 @@ export default function PatientsPage() {
                     <TableRow
                       key={row.id}
                       data-state={row.getIsSelected() && 'selected'}
-                      onClick={() => router.push(`/patients/${row.original.id}`)}
+                      onClick={() =>
+                        router.push(`/patients/${row.original.id}`)
+                      }
                       className="cursor-pointer"
                     >
                       {row.getVisibleCells().map((cell) => (
@@ -402,12 +540,13 @@ export default function PatientsPage() {
               </TableBody>
             </Table>
           </div>
-          <div className="flex items-center justify-end space-x-4 py-4 text-xs">
-            <div className="flex-1 text-muted-foreground">
-              {table.getFilteredRowModel().rows.length} row(s) found.
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="flex-1 text-xs text-muted-foreground">
+              {table.getFilteredSelectedRowModel().rows.length} of{' '}
+              {table.getFilteredRowModel().rows.length} row(s) selected.
             </div>
             <div className="flex items-center space-x-2">
-              <p className="font-medium">Rows per page</p>
+              <p className="text-xs font-medium">Rows per page</p>
               <Select
                 value={`${table.getState().pagination.pageSize}`}
                 onValueChange={(value) => {
@@ -428,7 +567,7 @@ export default function PatientsPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex w-[100px] items-center justify-center font-medium">
+            <div className="flex w-[100px] items-center justify-center text-xs font-medium">
               Page {table.getState().pagination.pageIndex + 1} of{' '}
               {table.getPageCount()}
             </div>
