@@ -88,6 +88,12 @@ export const navGroups: NavGroup[] = [
         iconBgColor: 'bg-orange-500',
       },
       {
+        label: 'Patients',
+        href: '/patients',
+        icon: Users,
+        iconBgColor: 'bg-pink-500',
+      },
+      {
         label: 'Services',
         href: '/services',
         icon: Stethoscope,
