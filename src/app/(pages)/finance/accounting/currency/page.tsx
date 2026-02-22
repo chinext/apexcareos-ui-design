@@ -82,7 +82,7 @@ const statusVariant: {
   [key: string]: 'default' | 'secondary' | 'destructive' | 'outline';
 } = {
   Active: 'default',
-  Inactive: 'secondary',
+  Inactive: 'destructive',
 };
 
 export default function AccountingCurrencyPage() {

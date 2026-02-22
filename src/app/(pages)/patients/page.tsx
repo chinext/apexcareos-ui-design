@@ -67,7 +67,7 @@ const statusVariant: {
   [key: string]: 'default' | 'secondary' | 'destructive' | 'outline';
 } = {
   Active: 'default',
-  Inactive: 'secondary',
+  Inactive: 'destructive',
 };
 
 export const columns: ColumnDef<Patient>[] = [

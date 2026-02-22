@@ -78,7 +78,7 @@ const statusVariant: {
   [key: string]: 'default' | 'secondary' | 'destructive' | 'outline';
 } = {
   Active: 'default',
-  Inactive: 'secondary',
+  Inactive: 'destructive',
 };
 
 const typeVariant: Record<string, string> = {
