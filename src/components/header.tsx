@@ -144,9 +144,8 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
       >
         <div className="flex items-center gap-4">
           <Button
-            variant="outline"
+            variant="ghost"
             size="icon"
-            className="rounded-full"
             onClick={onToggleSidebar}
           >
             <PanelLeft className="h-5 w-5" />
