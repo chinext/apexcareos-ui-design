@@ -11,7 +11,6 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  getGlobalFilteredRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import { format, differenceInYears } from 'date-fns';
@@ -19,10 +18,10 @@ import {
   ArrowUpDown,
   MoreHorizontal,
   PlusCircle,
-  UserPlus,
   Users,
   TrendingUp,
   TrendingDown,
+  UserPlus,
 } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -198,7 +197,6 @@ export default function PatientsPage() {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getGlobalFilteredRowModel: getGlobalFilteredRowModel(),
     onGlobalFilterChange: setGlobalFilter,
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
