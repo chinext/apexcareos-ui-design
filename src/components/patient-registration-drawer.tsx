@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -98,7 +97,7 @@ export function PatientRegistrationDrawer({ open, onOpenChange }: PatientRegistr
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="p-0">
+      <SheetContent className="p-0 sm:max-w-2xl">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex h-full flex-col">
             <SheetHeader className="p-6">
