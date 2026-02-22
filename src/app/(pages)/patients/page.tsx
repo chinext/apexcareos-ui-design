@@ -30,6 +30,7 @@ import {
   ArrowRightLeft,
   Combine,
 } from 'lucide-react';
+import * as xlsx from 'xlsx';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -86,6 +87,180 @@ const statusVariant: {
   Inactive: 'destructive',
 };
 
+const columns: ColumnDef<Patient>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+        className="translate-y-[2px]"
+      />
+    ),
+    cell: ({ row }) => (
+      <div onClick={(e) => e.stopPropagation()}>
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+          className="translate-y-[2px]"
+        />
+      </div>
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: 'name',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Patient
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="flex items-center gap-3">
+        <Avatar className="h-10 w-10">
+          <AvatarImage src={row.original.avatar} alt={row.original.name} />
+          <AvatarFallback>
+            {row.original.name
+              .split(' ')
+              .map((n) => n[0])
+              .join('')}
+          </AvatarFallback>
+        </Avatar>
+        <div>
+          <div className="font-medium">{row.original.name}</div>
+          <div className="text-xs text-muted-foreground">
+            {row.original.id}
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'phone',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Contact
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <div>
+        <div>{row.original.phone}</div>
+        <div className="text-xs text-muted-foreground">
+          {row.original.email}
+        </div>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'dob',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Date of Birth
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => {
+      const age = differenceInYears(new Date(), new Date(row.original.dob));
+      return (
+        <div>
+          <div>{format(new Date(row.original.dob), 'PPP')}</div>
+          <div className="text-xs text-muted-foreground">{age} years</div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'registeredDate',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Date Registered
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => format(new Date(row.original.registeredDate), 'PPP'),
+  },
+  {
+    accessorKey: 'gender',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Gender
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+  },
+  {
+    accessorKey: 'account',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Account
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+  },
+  {
+    accessorKey: 'lastVisit',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Last Visit
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => format(new Date(row.original.lastVisit), 'PPP'),
+  },
+  {
+    accessorKey: 'status',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Status
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <Badge variant={statusVariant[row.original.status] || 'default'}>
+        {row.original.status}
+      </Badge>
+    ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+];
+
+
 export default function PatientsPage() {
   const router = useRouter();
   const [data] = React.useState<Patient[]>(patientsList);
@@ -100,179 +275,6 @@ export default function PatientsPage() {
   const [advancedFilters, setAdvancedFilters] = React.useState<Filter[]>([
     { id: 1, column: '', operator: 'contains', value: '' },
   ]);
-
-  const columns: ColumnDef<Patient>[] = [
-    {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-          className="translate-y-[2px]"
-        />
-      ),
-      cell: ({ row }) => (
-        <div onClick={(e) => e.stopPropagation()}>
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
-            className="translate-y-[2px]"
-          />
-        </div>
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      accessorKey: 'name',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Patient
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => (
-        <div className="flex items-center gap-3">
-          <Avatar className="h-10 w-10">
-            <AvatarImage src={row.original.avatar} alt={row.original.name} />
-            <AvatarFallback>
-              {row.original.name
-                .split(' ')
-                .map((n) => n[0])
-                .join('')}
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <div className="font-medium">{row.original.name}</div>
-            <div className="text-xs text-muted-foreground">
-              {row.original.id}
-            </div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'phone',
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Contact
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => (
-        <div>
-          <div>{row.original.phone}</div>
-          <div className="text-xs text-muted-foreground">
-            {row.original.email}
-          </div>
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'dob',
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Date of Birth
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => {
-        const age = differenceInYears(new Date(), new Date(row.original.dob));
-        return (
-          <div>
-            <div>{format(new Date(row.original.dob), 'PPP')}</div>
-            <div className="text-xs text-muted-foreground">{age} years</div>
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: 'registeredDate',
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Date Registered
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => format(new Date(row.original.registeredDate), 'PPP'),
-    },
-    {
-      accessorKey: 'gender',
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Gender
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-    },
-    {
-      accessorKey: 'account',
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Account
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-    },
-    {
-      accessorKey: 'lastVisit',
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Last Visit
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => format(new Date(row.original.lastVisit), 'PPP'),
-    },
-    {
-      accessorKey: 'status',
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Status
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ row }) => (
-        <Badge variant={statusVariant[row.original.status] || 'default'}>
-          {row.original.status}
-        </Badge>
-      ),
-      filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id));
-      },
-    },
-  ];
 
   const table = useReactTable({
     data,
@@ -296,6 +298,39 @@ export default function PatientsPage() {
       globalFilter,
     },
   });
+
+  const handleExport = () => {
+    const tableData = table.getFilteredSelectedRowModel().rows.length > 0 
+        ? table.getFilteredSelectedRowModel().rows 
+        : table.getFilteredRowModel().rows;
+    
+    if (tableData.length === 0) {
+        // Here you might want to show a toast notification that there's nothing to export
+        console.warn("No data to export.");
+        return;
+    }
+
+    const dataToExport = tableData.map(row => {
+        const { avatar, ...original } = row.original; // Exclude avatar from export
+        return {
+            'ID': original.id,
+            'Name': original.name,
+            'Phone': original.phone,
+            'Email': original.email,
+            'Date of Birth': original.dob,
+            'Registered Date': original.registeredDate,
+            'Gender': original.gender,
+            'Account': original.account,
+            'Last Visit': original.lastVisit,
+            'Status': original.status,
+        }
+    });
+
+    const worksheet = xlsx.utils.json_to_sheet(dataToExport);
+    const workbook = xlsx.utils.book_new();
+    xlsx.utils.book_append_sheet(workbook, worksheet, 'Patients');
+    xlsx.writeFile(workbook, 'Patients.xlsx');
+  };
 
   const handleAdvancedFilterChange = (
     id: number,
@@ -377,29 +412,30 @@ export default function PatientsPage() {
               placeholder="Filter patients..."
               value={globalFilter ?? ''}
               onChange={(event) => setGlobalFilter(event.target.value)}
-              className="max-w-sm"
+              className="h-9 max-w-sm"
             />
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="ml-auto">
+                <Button variant="outline" size="sm" className="ml-auto">
                   <ListFilter className="mr-2 h-4 w-4" />
                   Filters
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[500px]" align="end">
                 <div className="space-y-4 p-2">
-                  <h4 className="font-medium leading-none">Filter Builder</h4>
+                  <h4 className="font-medium leading-none text-sm">Filter Builder</h4>
                   <div className="space-y-2">
-                    {advancedFilters.map((filter, index) => (
-                      <div key={filter.id} className="flex items-center gap-2">
+                    {advancedFilters.map((filter) => (
+                      <div key={filter.id} className="flex items-center gap-1">
                         <Button
                           variant="ghost"
                           size="icon"
+                          className="h-8 w-8"
                           onClick={() => removeFilter(filter.id)}
                         >
                           <X className="h-4 w-4" />
                         </Button>
-                        <span className="text-sm">Where</span>
+                        <span className="text-xs">Where</span>
                         <Select
                           value={filter.column}
                           onValueChange={(value) =>
@@ -410,7 +446,7 @@ export default function PatientsPage() {
                             )
                           }
                         >
-                          <SelectTrigger className="w-32">
+                          <SelectTrigger className="h-8 w-32 text-xs">
                             <SelectValue placeholder="Column" />
                           </SelectTrigger>
                           <SelectContent>
@@ -430,7 +466,7 @@ export default function PatientsPage() {
                             )
                           }
                         >
-                          <SelectTrigger className="w-32">
+                          <SelectTrigger className="h-8 w-32 text-xs">
                             <SelectValue placeholder="Operator" />
                           </SelectTrigger>
                           <SelectContent>
@@ -442,7 +478,7 @@ export default function PatientsPage() {
                           </SelectContent>
                         </Select>
                         <Input
-                          className="flex-1"
+                          className="h-8 flex-1 text-xs"
                           placeholder="Value"
                           value={filter.value}
                           onChange={(e) =>
@@ -456,7 +492,7 @@ export default function PatientsPage() {
                       </div>
                     ))}
                   </div>
-                  <Button variant="link" size="sm" onClick={addFilter}>
+                  <Button variant="link" size="sm" className="text-xs" onClick={addFilter}>
                     + Add filter
                   </Button>
                 </div>
@@ -465,21 +501,21 @@ export default function PatientsPage() {
           </div>
 
           {table.getFilteredSelectedRowModel().rows.length > 0 && (
-            <div className="mb-4 flex items-center gap-2 rounded-lg bg-muted p-2">
+            <div className="mb-4 flex items-center gap-2 rounded-lg bg-muted p-1.5">
               <span className="text-sm font-medium">
                 {table.getFilteredSelectedRowModel().rows.length} selected
               </span>
               <div className="ml-auto flex items-center gap-2">
-                <Button variant="outline" size="sm">
-                  <FileDown className="mr-2 h-4 w-4" />
+                <Button variant="outline" size="sm" onClick={handleExport}>
+                  <FileDown className="mr-2 h-3 w-3" />
                   Export
                 </Button>
                 <Button variant="outline" size="sm">
-                  <ArrowRightLeft className="mr-2 h-4 w-4" />
+                  <ArrowRightLeft className="mr-2 h-3 w-3" />
                   Transfer
                 </Button>
                 <Button variant="outline" size="sm">
-                  <Combine className="mr-2 h-4 w-4" />
+                  <Combine className="mr-2 h-3 w-3" />
                   Merge
                 </Button>
               </div>
