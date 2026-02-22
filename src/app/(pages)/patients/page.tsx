@@ -1,229 +1,305 @@
 'use client';
 
-import { useState } from 'react';
+import * as React from 'react';
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, UserPlus } from 'lucide-react';
+import {
+  ArrowUpDown,
+  MoreHorizontal,
+  PlusCircle,
+  UserPlus,
+  Users,
+} from 'lucide-react';
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { PageHeader } from '@/components/page-header';
+import { patientsList, patientStats } from '@/lib/data';
+import { PatientRegistrationDrawer } from '@/components/patient-registration-drawer';
+import { cn } from '@/lib/utils';
+
+type Patient = (typeof patientsList)[0];
+
+const statusVariant: {
+  [key: string]: 'default' | 'secondary' | 'destructive' | 'outline';
+} = {
+  Active: 'default',
+  Inactive: 'secondary',
+};
+
+export const columns: ColumnDef<Patient>[] = [
+  {
+    accessorKey: 'name',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Patient Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="flex items-center gap-3">
+        <Avatar className="h-8 w-8">
+          <AvatarImage src={row.original.avatar} alt={row.original.name} />
+          <AvatarFallback>
+            {row.original.name
+              .split(' ')
+              .map((n) => n[0])
+              .join('')}
+          </AvatarFallback>
+        </Avatar>
+        <span className="font-medium">{row.original.name}</span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'id',
+    header: 'Patient ID',
+  },
+  {
+    accessorKey: 'registeredDate',
+    header: 'Date Registered',
+    cell: ({ row }) => format(new Date(row.original.registeredDate), 'PPP'),
+  },
+  {
+    accessorKey: 'gender',
+    header: 'Gender',
+  },
+  {
+    accessorKey: 'bloodGroup',
+    header: 'Blood Group',
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => (
+      <Badge variant={statusVariant[row.original.status] || 'default'}>
+        {row.original.status}
+      </Badge>
+    ),
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      const patient = row.original;
+      return (
+        <div className="text-right">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(patient.id)}
+              >
+                Copy patient ID
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>View medical record</DropdownMenuItem>
+              <DropdownMenuItem>Edit patient details</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      );
+    },
+  },
+];
 
 export default function PatientsPage() {
-  const [dob, setDob] = useState<Date>();
+  const [data] = React.useState<Patient[]>(patientsList);
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] =
+    React.useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+
+  const table = useReactTable({
+    data,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
+  });
 
   return (
     <main className="flex-1 space-y-6 p-4 md:p-6">
-      <PageHeader title="Patient Registration">
-        <Button>
-          <UserPlus className="mr-2 h-4 w-4" />
+      <PageHeader title="Patients">
+        <Button onClick={() => setIsDrawerOpen(true)}>
+          <PlusCircle className="mr-2 h-4 w-4" />
           Register Patient
         </Button>
       </PageHeader>
 
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {patientStats.map((stat, index) => (
+          <Card key={index}>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                {stat.title}
+              </CardTitle>
+              <stat.icon className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stat.value}</div>
+              <p
+                className={cn(
+                  'text-xs text-muted-foreground',
+                  stat.changeType === 'increase'
+                    ? 'text-green-600'
+                    : 'text-red-600'
+                )}
+              >
+                {stat.change} vs. last month
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
       <Card>
         <CardHeader>
-          <CardTitle>New Patient Details</CardTitle>
-          <CardDescription>
-            Fill out the form to register a new patient.
-          </CardDescription>
+          <CardTitle>All Patients</CardTitle>
         </CardHeader>
         <CardContent>
-          <form>
-            <div className="space-y-8">
-              {/* Personal Information */}
-              <div className="space-y-4 rounded-lg border p-4">
-                <h3 className="text-lg font-medium leading-6 text-foreground">
-                  Personal Information
-                </h3>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                  <div>
-                    <Label htmlFor="full-name">Full Name *</Label>
-                    <Input
-                      id="full-name"
-                      placeholder="Enter patient's full name"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="dob">Date of Birth *</Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant={'outline'}
-                          className={cn(
-                            'w-full justify-start text-left font-normal',
-                            !dob && 'text-muted-foreground'
+          <div className="mb-4 flex items-center gap-4">
+            <Input
+              placeholder="Filter by patient name or ID..."
+              value={
+                (table.getColumn('name')?.getFilterValue() as string) ?? ''
+              }
+              onChange={(event) =>
+                table.getColumn('name')?.setFilterValue(event.target.value)
+              }
+              className="max-w-sm"
+            />
+          </div>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && 'selected'}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
                           )}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {dob ? format(dob, 'PPP') : <span>dd/mm/yyyy</span>}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          mode="single"
-                          selected={dob}
-                          onSelect={setDob}
-                          captionLayout="dropdown-buttons"
-                          fromYear={1900}
-                          toYear={new Date().getFullYear()}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-                  <div>
-                    <Label htmlFor="gender">Gender *</Label>
-                    <Select>
-                      <SelectTrigger id="gender">
-                        <SelectValue placeholder="Select gender" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="male">Male</SelectItem>
-                        <SelectItem value="female">Female</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </div>
-
-              {/* Contact Information */}
-              <div className="space-y-4 rounded-lg border p-4">
-                <h3 className="text-lg font-medium leading-6 text-foreground">
-                  Contact Information
-                </h3>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <div>
-                    <Label htmlFor="phone">Phone Number *</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="Enter phone number"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="email">Email Address</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="Enter email address"
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <Label htmlFor="address">Address</Label>
-                    <Textarea
-                      id="address"
-                      placeholder="Enter patient's full address"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Emergency Contact */}
-              <div className="space-y-4 rounded-lg border p-4">
-                <h3 className="text-lg font-medium leading-6 text-foreground">
-                  Emergency Contact
-                </h3>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                  <div>
-                    <Label htmlFor="emergency-name">Contact Name *</Label>
-                    <Input
-                      id="emergency-name"
-                      placeholder="Enter emergency contact name"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="emergency-phone">Contact Phone *</Label>
-                    <Input
-                      id="emergency-phone"
-                      type="tel"
-                      placeholder="Enter emergency contact phone"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="emergency-relation">Relationship</Label>
-                    <Input
-                      id="emergency-relation"
-                      placeholder="e.g. Spouse, Parent"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Medical Information */}
-              <div className="space-y-4 rounded-lg border p-4">
-                <h3 className="text-lg font-medium leading-6 text-foreground">
-                  Medical Information
-                </h3>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <div>
-                    <Label htmlFor="blood-type">Blood Type</Label>
-                    <Select>
-                      <SelectTrigger id="blood-type">
-                        <SelectValue placeholder="Select blood type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="a+">A+</SelectItem>
-                        <SelectItem value="a-">A-</SelectItem>
-                        <SelectItem value="b+">B+</SelectItem>
-                        <SelectItem value="b-">B-</SelectItem>
-                        <SelectItem value="ab+">AB+</SelectItem>
-                        <SelectItem value="ab-">AB-</SelectItem>
-                        <SelectItem value="o+">O+</SelectItem>
-                        <SelectItem value="o-">O-</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div></div>
-                  <div className="md:col-span-2">
-                    <Label htmlFor="allergies">Allergies</Label>
-                    <Textarea
-                      id="allergies"
-                      placeholder="List any known allergies..."
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <Label htmlFor="medical-history">
-                      Past Medical History
-                    </Label>
-                    <Textarea
-                      id="medical-history"
-                      placeholder="List any significant past medical history..."
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="mt-8 flex justify-end gap-4">
-              <Button variant="outline">Cancel</Button>
-              <Button>Register Patient</Button>
-            </div>
-          </form>
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </Button>
+          </div>
         </CardContent>
       </Card>
+      <PatientRegistrationDrawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen} />
     </main>
   );
 }

@@ -1,4 +1,4 @@
-import { User, Users, Calendar, DollarSign, TrendingUp, TrendingDown } from 'lucide-react';
+import { User, Users, Calendar, DollarSign, TrendingUp, TrendingDown, UserPlus } from 'lucide-react';
 
 export const kpis = [
   {
@@ -304,6 +304,28 @@ export const medicalRecords = [
         }
     }
 ];
+
+export const patientStats = [
+  { title: 'Total Patients', value: '1,254', change: '+12.5%', changeType: 'increase', icon: Users },
+  { title: 'New Patients', value: '89', change: '+8.2%', changeType: 'increase', icon: UserPlus },
+  { title: 'In-patients', value: '45', change: '-2.1%', changeType: 'decrease', icon: TrendingUp },
+  { title: 'Out-patients', value: '1,209', change: '+15.0%', changeType: 'increase', icon: TrendingDown },
+];
+
+
+export const patientsList = [
+    { id: 'PID-001', name: 'Liam Johnson', avatar: 'https://i.pravatar.cc/40?u=liam', registeredDate: '2023-01-15', gender: 'Male', bloodGroup: 'O+', status: 'Active' },
+    { id: 'PID-002', name: 'Olivia Smith', avatar: 'https://i.pravatar.cc/40?u=olivia', registeredDate: '2023-02-20', gender: 'Female', bloodGroup: 'A-', status: 'Active' },
+    { id: 'PID-003', name: 'Noah Williams', avatar: 'https://i.pravatar.cc/40?u=noah', registeredDate: '2023-03-10', gender: 'Male', bloodGroup: 'B+', status: 'Inactive' },
+    { id: 'PID-004', name: 'Emma Brown', avatar: 'https://i.pravatar.cc/40?u=emma', registeredDate: '2023-04-05', gender: 'Female', bloodGroup: 'AB+', status: 'Active' },
+    { id: 'PID-005', name: 'James Jones', avatar: 'https://i.pravatar.cc/40?u=james', registeredDate: '2023-05-21', gender: 'Male', bloodGroup: 'O-', status: 'Active' },
+    { id: 'PID-006', name: 'Sophia Garcia', avatar: 'https://i.pravatar.cc/40?u=sophia', registeredDate: '2023-06-18', gender: 'Female', bloodGroup: 'A+', status: 'Active' },
+    { id: 'PID-007', name: 'Logan Miller', avatar: 'https://i.pravatar.cc/40?u=logan', registeredDate: '2023-07-02', gender: 'Male', bloodGroup: 'B-', status: 'Inactive' },
+    { id: 'PID-008', name: 'Isabella Davis', avatar: 'https://i.pravatar.cc/40?u=isabella', registeredDate: '2023-08-30', gender: 'Female', bloodGroup: 'AB-', status: 'Active' },
+    { id: 'PID-009', name: 'Mason Rodriguez', avatar: 'https://i.pravatar.cc/40?u=mason', registeredDate: '2023-09-11', gender: 'Male', bloodGroup: 'O+', status: 'Active' },
+    { id: 'PID-010', name: 'Ava Martinez', avatar: 'https://i.pravatar.cc/40?u=ava', registeredDate: '2023-10-25', gender: 'Female', bloodGroup: 'A-', status: 'Active' },
+];
+
 
 export const patientAdmissionsChartData = [
     { date: "Jan", admissions: 120 },
