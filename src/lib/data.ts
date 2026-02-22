@@ -314,16 +314,16 @@ export const patientStats = [
 
 
 export const patientsList = [
-    { id: 'PID-001', name: 'Liam Johnson', avatar: 'https://i.pravatar.cc/40?u=liam', registeredDate: '2023-01-15', gender: 'Male', bloodGroup: 'O+', status: 'Active' },
-    { id: 'PID-002', name: 'Olivia Smith', avatar: 'https://i.pravatar.cc/40?u=olivia', registeredDate: '2023-02-20', gender: 'Female', bloodGroup: 'A-', status: 'Active' },
-    { id: 'PID-003', name: 'Noah Williams', avatar: 'https://i.pravatar.cc/40?u=noah', registeredDate: '2023-03-10', gender: 'Male', bloodGroup: 'B+', status: 'Inactive' },
-    { id: 'PID-004', name: 'Emma Brown', avatar: 'https://i.pravatar.cc/40?u=emma', registeredDate: '2023-04-05', gender: 'Female', bloodGroup: 'AB+', status: 'Active' },
-    { id: 'PID-005', name: 'James Jones', avatar: 'https://i.pravatar.cc/40?u=james', registeredDate: '2023-05-21', gender: 'Male', bloodGroup: 'O-', status: 'Active' },
-    { id: 'PID-006', name: 'Sophia Garcia', avatar: 'https://i.pravatar.cc/40?u=sophia', registeredDate: '2023-06-18', gender: 'Female', bloodGroup: 'A+', status: 'Active' },
-    { id: 'PID-007', name: 'Logan Miller', avatar: 'https://i.pravatar.cc/40?u=logan', registeredDate: '2023-07-02', gender: 'Male', bloodGroup: 'B-', status: 'Inactive' },
-    { id: 'PID-008', name: 'Isabella Davis', avatar: 'https://i.pravatar.cc/40?u=isabella', registeredDate: '2023-08-30', gender: 'Female', bloodGroup: 'AB-', status: 'Active' },
-    { id: 'PID-009', name: 'Mason Rodriguez', avatar: 'https://i.pravatar.cc/40?u=mason', registeredDate: '2023-09-11', gender: 'Male', bloodGroup: 'O+', status: 'Active' },
-    { id: 'PID-010', name: 'Ava Martinez', avatar: 'https://i.pravatar.cc/40?u=ava', registeredDate: '2023-10-25', gender: 'Female', bloodGroup: 'A-', status: 'Active' },
+    { id: 'PID-001', name: 'Liam Johnson', avatar: 'https://i.pravatar.cc/40?u=liam', phone: '555-0101', email: 'liam.j@example.com', dob: '1995-05-20', registeredDate: '2023-01-15', gender: 'Male', account: 'Aetna', lastVisit: '2024-05-10', bloodGroup: 'O+', status: 'Active' },
+    { id: 'PID-002', name: 'Olivia Smith', avatar: 'https://i.pravatar.cc/40?u=olivia', phone: '555-0102', email: 'olivia.s@example.com', dob: '1988-11-30', registeredDate: '2023-02-20', gender: 'Female', account: 'Private', lastVisit: '2024-04-22', bloodGroup: 'A-', status: 'Active' },
+    { id: 'PID-003', name: 'Noah Williams', avatar: 'https://i.pravatar.cc/40?u=noah', phone: '555-0103', email: 'noah.w@example.com', dob: '2001-08-12', registeredDate: '2023-03-10', gender: 'Male', account: 'Cigna', lastVisit: '2024-03-15', bloodGroup: 'B+', status: 'Inactive' },
+    { id: 'PID-004', name: 'Emma Brown', avatar: 'https://i.pravatar.cc/40?u=emma', phone: '555-0104', email: 'emma.b@example.com', dob: '1992-03-25', registeredDate: '2023-04-05', gender: 'Female', account: 'Private', lastVisit: '2024-05-18', bloodGroup: 'AB+', status: 'Active' },
+    { id: 'PID-005', name: 'James Jones', avatar: 'https://i.pravatar.cc/40?u=james', phone: '555-0105', email: 'james.j@example.com', dob: '1976-07-14', registeredDate: '2023-05-21', gender: 'Male', account: 'Blue Cross', lastVisit: '2024-05-01', bloodGroup: 'O-', status: 'Active' },
+    { id: 'PID-006', name: 'Sophia Garcia', avatar: 'https://i.pravatar.cc/40?u=sophia', phone: '555-0106', email: 'sophia.g@example.com', dob: '1999-12-01', registeredDate: '2023-06-18', gender: 'Female', account: 'Private', lastVisit: '2024-05-20', bloodGroup: 'A+', status: 'Active' },
+    { id: 'PID-007', name: 'Logan Miller', avatar: 'https://i.pravatar.cc/40?u=logan', phone: '555-0107', email: 'logan.m@example.com', dob: '2005-02-18', registeredDate: '2023-07-02', gender: 'Male', account: 'UnitedHealthcare', lastVisit: '2024-02-11', bloodGroup: 'B-', status: 'Inactive' },
+    { id: 'PID-008', name: 'Isabella Davis', avatar: 'https://i.pravatar.cc/40?u=isabella', phone: '555-0108', email: 'isabella.d@example.com', dob: '1985-09-05', registeredDate: '2023-08-30', gender: 'Female', account: 'Private', lastVisit: '2024-05-12', bloodGroup: 'AB-', status: 'Active' },
+    { id: 'PID-009', name: 'Mason Rodriguez', avatar: 'https://i.pravatar.cc/40?u=mason', phone: '555-0109', email: 'mason.r@example.com', dob: '1990-10-10', registeredDate: '2023-09-11', gender: 'Male', account: 'Humana', lastVisit: '2024-05-09', bloodGroup: 'O+', status: 'Active' },
+    { id: 'PID-010', name: 'Ava Martinez', avatar: 'https://i.pravatar.cc/40?u=ava', phone: '555-0110', email: 'ava.m@example.com', dob: '1998-06-22', registeredDate: '2023-10-25', gender: 'Female', account: 'Private', lastVisit: '2024-04-30', bloodGroup: 'A-', status: 'Active' },
 ];
 
 

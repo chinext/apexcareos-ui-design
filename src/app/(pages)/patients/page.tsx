@@ -11,15 +11,18 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  getGlobalFilteredRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { format } from 'date-fns';
+import { format, differenceInYears } from 'date-fns';
 import {
   ArrowUpDown,
   MoreHorizontal,
   PlusCircle,
   UserPlus,
   Users,
+  TrendingUp,
+  TrendingDown,
 } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -71,14 +74,14 @@ export const columns: ColumnDef<Patient>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Patient Name
+          Patient
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
       <div className="flex items-center gap-3">
-        <Avatar className="h-8 w-8">
+        <Avatar className="h-10 w-10">
           <AvatarImage src={row.original.avatar} alt={row.original.name} />
           <AvatarFallback>
             {row.original.name
@@ -87,13 +90,34 @@ export const columns: ColumnDef<Patient>[] = [
               .join('')}
           </AvatarFallback>
         </Avatar>
-        <span className="font-medium">{row.original.name}</span>
+        <div>
+            <div className="font-medium">{row.original.name}</div>
+            <div className="text-xs text-muted-foreground">{row.original.id}</div>
+        </div>
       </div>
     ),
   },
   {
-    accessorKey: 'id',
-    header: 'Patient ID',
+    header: 'Contact',
+    cell: ({ row }) => (
+        <div>
+            <div>{row.original.phone}</div>
+            <div className="text-xs text-muted-foreground">{row.original.email}</div>
+        </div>
+    )
+  },
+  {
+    accessorKey: 'dob',
+    header: 'Date of Birth',
+    cell: ({ row }) => {
+      const age = differenceInYears(new Date(), new Date(row.original.dob));
+      return (
+          <div>
+            <div>{format(new Date(row.original.dob), 'PPP')}</div>
+            <div className="text-xs text-muted-foreground">{age} years</div>
+          </div>
+      )
+    },
   },
   {
     accessorKey: 'registeredDate',
@@ -105,8 +129,13 @@ export const columns: ColumnDef<Patient>[] = [
     header: 'Gender',
   },
   {
-    accessorKey: 'bloodGroup',
-    header: 'Blood Group',
+    accessorKey: 'account',
+    header: 'Account',
+  },
+   {
+    accessorKey: 'lastVisit',
+    header: 'Last Visit',
+    cell: ({ row }) => format(new Date(row.original.lastVisit), 'PPP'),
   },
   {
     accessorKey: 'status',
@@ -119,6 +148,7 @@ export const columns: ColumnDef<Patient>[] = [
   },
   {
     id: 'actions',
+    header: 'Open',
     cell: ({ row }) => {
       const patient = row.original;
       return (
@@ -153,6 +183,7 @@ export default function PatientsPage() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] =
     React.useState<ColumnFiltersState>([]);
+  const [globalFilter, setGlobalFilter] = React.useState('');
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
@@ -167,6 +198,8 @@ export default function PatientsPage() {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getGlobalFilteredRowModel: getGlobalFilteredRowModel(),
+    onGlobalFilterChange: setGlobalFilter,
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
@@ -174,6 +207,7 @@ export default function PatientsPage() {
       columnFilters,
       columnVisibility,
       rowSelection,
+      globalFilter,
     },
   });
 
@@ -219,12 +253,10 @@ export default function PatientsPage() {
         <CardContent>
           <div className="mb-4 flex items-center gap-4">
             <Input
-              placeholder="Filter by patient name or ID..."
-              value={
-                (table.getColumn('name')?.getFilterValue() as string) ?? ''
-              }
+              placeholder="Filter patients..."
+              value={globalFilter ?? ''}
               onChange={(event) =>
-                table.getColumn('name')?.setFilterValue(event.target.value)
+                setGlobalFilter(event.target.value)
               }
               className="max-w-sm"
             />
