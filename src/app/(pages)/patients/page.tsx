@@ -454,123 +454,125 @@ export default function PatientsPage() {
           <CardTitle>All Patients</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="mb-4 flex items-center gap-4">
+          <div className="mb-4 flex items-center">
             <Input
               placeholder="Filter patients..."
               value={globalFilter ?? ''}
               onChange={(event) => setGlobalFilter(event.target.value)}
               className="h-9 max-w-sm"
             />
-            <Popover open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-              <PopoverTrigger asChild>
-                <Button variant="outline" size="sm" className="h-9">
-                  <ListFilter className="mr-2 h-4 w-4" />
-                  Filters
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[580px]" align="end">
-                <div className="space-y-4 p-2">
-                  <h4 className="text-sm font-medium leading-none">Filter Builder</h4>
-                  <div className="space-y-2">
-                    {advancedFilters.map((filter, index) => (
-                      <div key={filter.id} className="flex items-center gap-1">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 shrink-0"
-                          onClick={() => removeFilter(filter.id)}
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                        {index > 0 ? (
-                            <Select
-                                value={filter.logic}
-                                onValueChange={(value) => handleAdvancedFilterChange(filter.id, 'logic', value)}
-                            >
-                                <SelectTrigger className="h-8 w-20 shrink-0 text-xs">
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="AND">AND</SelectItem>
-                                    <SelectItem value="OR">OR</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        ) : (
-                            <div className="flex h-8 w-20 shrink-0 items-center px-3 text-xs text-muted-foreground">
-                                Where
-                            </div>
-                        )}
-                        <Select
-                          value={filter.column}
-                          onValueChange={(value) =>
-                            handleAdvancedFilterChange(
-                              filter.id,
-                              'column',
-                              value
-                            )
-                          }
-                        >
-                          <SelectTrigger className="h-8 w-32 text-xs">
-                            <SelectValue placeholder="Column" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="name">Name</SelectItem>
-                            <SelectItem value="email">Email</SelectItem>
-                            <SelectItem value="status">Status</SelectItem>
-                            <SelectItem value="gender">Gender</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <Select
-                          value={filter.operator}
-                          onValueChange={(value) =>
-                            handleAdvancedFilterChange(
-                              filter.id,
-                              'operator',
-                              value
-                            )
-                          }
-                        >
-                          <SelectTrigger className="h-8 w-32 text-xs">
-                            <SelectValue placeholder="Operator" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {operators.map((op) => (
-                              <SelectItem key={op} value={op}>
-                                {op}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <Input
-                          className="h-8 flex-1 text-xs"
-                          placeholder="Value"
-                          value={filter.value}
-                          onChange={(e) =>
-                            handleAdvancedFilterChange(
-                              filter.id,
-                              'value',
-                              e.target.value
-                            )
-                          }
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  <Button variant="link" size="sm" className="px-1 text-xs" onClick={addFilter}>
-                    + Add filter
+            <div className="ml-auto">
+              <Popover open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-9">
+                    <ListFilter className="mr-2 h-4 w-4" />
+                    Filters
                   </Button>
-                </div>
-                <div className="flex items-center justify-end gap-2 border-t p-2">
-                    <Button variant="ghost" size="sm" onClick={handleClearAllFilters}>
-                        Clear all
+                </PopoverTrigger>
+                <PopoverContent className="w-[580px]" align="end">
+                  <div className="space-y-4 p-2">
+                    <h4 className="text-sm font-medium leading-none">Filter Builder</h4>
+                    <div className="space-y-2">
+                      {advancedFilters.map((filter, index) => (
+                        <div key={filter.id} className="flex items-center gap-1">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 shrink-0"
+                            onClick={() => removeFilter(filter.id)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                          {index > 0 ? (
+                              <Select
+                                  value={filter.logic}
+                                  onValueChange={(value) => handleAdvancedFilterChange(filter.id, 'logic', value)}
+                              >
+                                  <SelectTrigger className="h-8 w-20 shrink-0 text-xs">
+                                      <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                      <SelectItem value="AND">AND</SelectItem>
+                                      <SelectItem value="OR">OR</SelectItem>
+                                  </SelectContent>
+                              </Select>
+                          ) : (
+                              <div className="flex h-8 w-20 shrink-0 items-center px-3 text-xs text-muted-foreground">
+                                  Where
+                              </div>
+                          )}
+                          <Select
+                            value={filter.column}
+                            onValueChange={(value) =>
+                              handleAdvancedFilterChange(
+                                filter.id,
+                                'column',
+                                value
+                              )
+                            }
+                          >
+                            <SelectTrigger className="h-8 w-32 text-xs">
+                              <SelectValue placeholder="Column" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="name">Name</SelectItem>
+                              <SelectItem value="email">Email</SelectItem>
+                              <SelectItem value="status">Status</SelectItem>
+                              <SelectItem value="gender">Gender</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Select
+                            value={filter.operator}
+                            onValueChange={(value) =>
+                              handleAdvancedFilterChange(
+                                filter.id,
+                                'operator',
+                                value
+                              )
+                            }
+                          >
+                            <SelectTrigger className="h-8 w-32 text-xs">
+                              <SelectValue placeholder="Operator" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {operators.map((op) => (
+                                <SelectItem key={op} value={op}>
+                                  {op}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <Input
+                            className="h-8 flex-1 text-xs"
+                            placeholder="Value"
+                            value={filter.value}
+                            onChange={(e) =>
+                              handleAdvancedFilterChange(
+                                filter.id,
+                                'value',
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <Button variant="link" size="sm" className="px-1 text-xs" onClick={addFilter}>
+                      + Add filter
                     </Button>
-                    <Button size="sm" onClick={handleApplyFilters}>
-                        <Search className="mr-2 h-4 w-4" />
-                        Search
-                    </Button>
-                </div>
-              </PopoverContent>
-            </Popover>
+                  </div>
+                  <div className="flex items-center justify-end gap-2 border-t p-2">
+                      <Button variant="ghost" size="sm" onClick={handleClearAllFilters}>
+                          Clear all
+                      </Button>
+                      <Button size="sm" onClick={handleApplyFilters}>
+                          <Search className="mr-2 h-4 w-4" />
+                          Search
+                      </Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
 
           {table.getFilteredSelectedRowModel().rows.length > 0 && (
