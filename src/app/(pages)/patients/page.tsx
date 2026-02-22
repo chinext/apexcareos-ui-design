@@ -76,6 +76,7 @@ type Filter = {
   column: keyof Patient | '';
   operator: string;
   value: string;
+  logic?: 'AND' | 'OR';
 };
 
 const operators = ['contains', 'equals', 'does not contain'];
@@ -265,8 +266,6 @@ export default function PatientsPage() {
   const router = useRouter();
   const [data] = React.useState<Patient[]>(patientsList);
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] =
-    React.useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = React.useState('');
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -275,12 +274,59 @@ export default function PatientsPage() {
   const [advancedFilters, setAdvancedFilters] = React.useState<Filter[]>([
     { id: 1, column: '', operator: 'contains', value: '' },
   ]);
+  
+  const filteredData = React.useMemo(() => {
+    return data.filter(row => {
+      if (advancedFilters.length === 0 || (advancedFilters.length === 1 && !advancedFilters[0].value)) {
+        return true;
+      }
+
+      let result = true;
+      for (let i = 0; i < advancedFilters.length; i++) {
+        const filter = advancedFilters[i];
+        if (!filter.column || !filter.value) {
+            if (i === 0) result = true;
+            continue;
+        }
+        
+        const rowValue = row[filter.column as keyof Patient];
+        const filterValue = filter.value.toLowerCase();
+        const rowValueString = String(rowValue).toLowerCase();
+
+        let currentFilterResult = false;
+        switch (filter.operator) {
+          case 'contains':
+            currentFilterResult = rowValueString.includes(filterValue);
+            break;
+          case 'equals':
+            currentFilterResult = rowValueString === filterValue;
+            break;
+          case 'does not contain':
+            currentFilterResult = !rowValueString.includes(filterValue);
+            break;
+          default:
+            currentFilterResult = true;
+        }
+
+        if (i === 0) {
+          result = currentFilterResult;
+        } else {
+          if (filter.logic === 'AND') {
+            result = result && currentFilterResult;
+          } else if (filter.logic === 'OR') {
+            result = result || currentFilterResult;
+          }
+        }
+      }
+      return result;
+    });
+  }, [data, advancedFilters]);
+
 
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -292,7 +338,6 @@ export default function PatientsPage() {
     getFacetedUniqueValues: getFacetedUniqueValues(),
     state: {
       sorting,
-      columnFilters,
       columnVisibility,
       rowSelection,
       globalFilter,
@@ -305,7 +350,6 @@ export default function PatientsPage() {
         : table.getFilteredRowModel().rows;
     
     if (tableData.length === 0) {
-        // Here you might want to show a toast notification that there's nothing to export
         console.warn("No data to export.");
         return;
     }
@@ -334,37 +378,25 @@ export default function PatientsPage() {
 
   const handleAdvancedFilterChange = (
     id: number,
-    field: keyof Filter,
+    field: keyof Omit<Filter, 'id'>,
     value: string
   ) => {
     const newFilters = advancedFilters.map((filter) =>
       filter.id === id ? { ...filter, [field]: value } : filter
     );
     setAdvancedFilters(newFilters);
-    applyAdvancedFilters(newFilters);
   };
 
   const addFilter = () => {
     setAdvancedFilters([
       ...advancedFilters,
-      { id: Date.now(), column: '', operator: 'contains', value: '' },
+      { id: Date.now(), column: '', operator: 'contains', value: '', logic: 'AND' },
     ]);
   };
 
   const removeFilter = (id: number) => {
     const newFilters = advancedFilters.filter((filter) => filter.id !== id);
     setAdvancedFilters(newFilters);
-    applyAdvancedFilters(newFilters);
-  };
-
-  const applyAdvancedFilters = (filters: Filter[]) => {
-    const newColumnFilters = filters
-      .filter((f) => f.column && f.value)
-      .map((f) => ({
-        id: f.column,
-        value: f.value,
-      }));
-    setColumnFilters(newColumnFilters);
   };
 
   return (
@@ -416,26 +448,43 @@ export default function PatientsPage() {
             />
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" size="sm" className="ml-auto">
+                <Button variant="outline" size="sm" className="h-9">
                   <ListFilter className="mr-2 h-4 w-4" />
                   Filters
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[500px]" align="end">
+              <PopoverContent className="w-[580px]" align="end">
                 <div className="space-y-4 p-2">
                   <h4 className="font-medium leading-none text-sm">Filter Builder</h4>
                   <div className="space-y-2">
-                    {advancedFilters.map((filter) => (
+                    {advancedFilters.map((filter, index) => (
                       <div key={filter.id} className="flex items-center gap-1">
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8"
+                          className="h-8 w-8 shrink-0"
                           onClick={() => removeFilter(filter.id)}
                         >
                           <X className="h-4 w-4" />
                         </Button>
-                        <span className="text-xs">Where</span>
+                        {index > 0 ? (
+                            <Select
+                                value={filter.logic}
+                                onValueChange={(value) => handleAdvancedFilterChange(filter.id, 'logic', value)}
+                            >
+                                <SelectTrigger className="h-8 w-20 shrink-0 text-xs">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="AND">AND</SelectItem>
+                                    <SelectItem value="OR">OR</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        ) : (
+                            <div className="flex h-8 w-20 shrink-0 items-center px-3 text-xs text-muted-foreground">
+                                Where
+                            </div>
+                        )}
                         <Select
                           value={filter.column}
                           onValueChange={(value) =>
@@ -506,15 +555,15 @@ export default function PatientsPage() {
                 {table.getFilteredSelectedRowModel().rows.length} selected
               </span>
               <div className="ml-auto flex items-center gap-2">
-                <Button variant="outline" size="sm" onClick={handleExport}>
+                <Button variant="outline" size="sm" className="h-8 text-xs" onClick={handleExport}>
                   <FileDown className="mr-2 h-3 w-3" />
                   Export
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" className="h-8 text-xs">
                   <ArrowRightLeft className="mr-2 h-3 w-3" />
                   Transfer
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" className="h-8 text-xs">
                   <Combine className="mr-2 h-3 w-3" />
                   Merge
                 </Button>
@@ -611,6 +660,7 @@ export default function PatientsPage() {
               <Button
                 variant="outline"
                 size="sm"
+                className="h-8"
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
               >
@@ -619,6 +669,7 @@ export default function PatientsPage() {
               <Button
                 variant="outline"
                 size="sm"
+                className="h-8"
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
               >
