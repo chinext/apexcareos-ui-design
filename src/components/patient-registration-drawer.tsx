@@ -97,7 +97,7 @@ export function PatientRegistrationDrawer({ open, onOpenChange }: PatientRegistr
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="p-0 sm:max-w-2xl">
+      <SheetContent className="p-0 sm:max-w-4xl bg-background/90 backdrop-blur-lg">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex h-full flex-col">
             <SheetHeader className="p-6">
