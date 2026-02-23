@@ -188,17 +188,17 @@ const columns: ColumnDef<Patient>[] = [
     },
   },
   {
-    accessorKey: 'registeredDate',
+    accessorKey: 'lastVisit',
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        Date Registered
+        Last Visit
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => format(new Date(row.original.registeredDate), 'dd-MMM-yyyy'),
+    cell: ({ row }) => format(new Date(row.original.lastVisit), 'dd-MMM-yyyy'),
   },
   {
     accessorKey: 'gender',
@@ -211,31 +211,6 @@ const columns: ColumnDef<Patient>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-  },
-  {
-    accessorKey: 'account',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Account
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-  },
-  {
-    accessorKey: 'lastVisit',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Last Visit
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => format(new Date(row.original.lastVisit), 'dd-MMM-yyyy'),
   },
   {
     accessorKey: 'status',
@@ -253,6 +228,31 @@ const columns: ColumnDef<Patient>[] = [
         {row.original.status}
       </Badge>
     ),
+  },
+  {
+    accessorKey: 'account',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Account
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+  },
+  {
+    accessorKey: 'registeredDate',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Date Registered
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => format(new Date(row.original.registeredDate), 'dd-MMM-yyyy'),
   },
 ];
 
