@@ -181,7 +181,7 @@ const columns: ColumnDef<Patient>[] = [
       const age = differenceInYears(new Date(), new Date(row.original.dob));
       return (
         <div>
-          <div>{format(new Date(row.original.dob), 'PPP')}</div>
+          <div>{format(new Date(row.original.dob), 'dd-MMM-yyyy')}</div>
           <div className="text-xs text-muted-foreground">{age} years</div>
         </div>
       );
@@ -198,7 +198,7 @@ const columns: ColumnDef<Patient>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => format(new Date(row.original.registeredDate), 'PPP'),
+    cell: ({ row }) => format(new Date(row.original.registeredDate), 'dd-MMM-yyyy'),
   },
   {
     accessorKey: 'gender',
@@ -235,7 +235,7 @@ const columns: ColumnDef<Patient>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => format(new Date(row.original.lastVisit), 'PPP'),
+    cell: ({ row }) => format(new Date(row.original.lastVisit), 'dd-MMM-yyyy'),
   },
   {
     accessorKey: 'status',

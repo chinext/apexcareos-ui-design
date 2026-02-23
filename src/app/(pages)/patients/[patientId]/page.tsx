@@ -62,9 +62,10 @@ export default function PatientDetailPage() {
             </div>
             <div>
               <h4 className="font-semibold">Medical Information</h4>
+              <p className="text-sm">Date of Birth: {format(new Date(patient.dob), 'dd-MMM-yyyy')}</p>
               <p className="text-sm">Blood Group: {patient.bloodGroup}</p>
               <p className="text-sm">
-                Last Visit: {format(new Date(patient.lastVisit), 'PPP')}
+                Last Visit: {format(new Date(patient.lastVisit), 'dd-MMM-yyyy')}
               </p>
             </div>
           </div>
@@ -73,7 +74,7 @@ export default function PatientDetailPage() {
             <p className="text-sm">Provider: {patient.account}</p>
             <p className="text-sm">
               Registered on:{' '}
-              {format(new Date(patient.registeredDate), 'PPP')}
+              {format(new Date(patient.registeredDate), 'dd-MMM-yyyy')}
             </p>
             <p className="text-sm">Status: {patient.status}</p>
           </div>
