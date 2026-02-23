@@ -1,10 +1,3 @@
-export default function RequisitionPage() {
-  return (
-    <main className="flex-1 space-y-6 p-4 md:p-6">
-      <h1 className="text-2xl font-bold tracking-tight md:text-3xl">Requisition</h1>
-      <p className="text-muted-foreground">
-        This is the placeholder for the Requisition page.
-      </p>
-    </main>
-  );
-}
+import RequisitionPage from '@/pages/laboratory/requisition/page';
+
+export default RequisitionPage;

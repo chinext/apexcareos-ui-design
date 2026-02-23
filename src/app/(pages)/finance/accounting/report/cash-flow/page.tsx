@@ -1,12 +1,3 @@
-import { PageHeader } from '@/components/page-header';
+import AccountingReportCashFlowPage from '@/pages/finance/accounting/report/cash-flow/page';
 
-export default function AccountingReportCashFlowPage() {
-  return (
-    <main className="flex-1 space-y-6 p-4 md:p-6">
-      <PageHeader title="Accounting Report - Cash Flow" />
-      <p className="text-muted-foreground">
-        This is the placeholder for the Accounting Report - Cash Flow page.
-      </p>
-    </main>
-  );
-}
+export default AccountingReportCashFlowPage;

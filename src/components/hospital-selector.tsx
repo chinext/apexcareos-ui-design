@@ -21,7 +21,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { hospitals } from '@/lib/data';
+import { hospitals } from '@/constants/data';
 
 export function HospitalSelector() {
   const [open, setOpen] = useState(false);

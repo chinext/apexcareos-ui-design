@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { navGroups, NavGroup } from '@/lib/nav-links';
+import { navGroups, NavGroup } from '@/constants/nav-links';
 import { cn } from '@/lib/utils';
 import { HospitalSelector } from './hospital-selector';
 import {

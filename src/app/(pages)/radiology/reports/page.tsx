@@ -1,10 +1,3 @@
-export default function RadiologyReportsPage() {
-  return (
-    <main className="flex-1 space-y-6 p-4 md:p-6">
-      <h1 className="text-2xl font-bold tracking-tight md:text-3xl">Radiology Reports</h1>
-      <p className="text-muted-foreground">
-        This is the placeholder for the Radiology Reports page.
-      </p>
-    </main>
-  );
-}
+import RadiologyReportsPage from '@/pages/radiology/reports/page';
+
+export default RadiologyReportsPage;

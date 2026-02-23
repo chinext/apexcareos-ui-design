@@ -7,7 +7,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from '@/components/ui/tooltip';
-import { navLinks } from '@/lib/nav-links';
+import { navLinks } from '@/constants/nav-links';
 import { AppLogo } from './app-logo';
 import { cn } from '@/lib/utils';
 import { UserNav } from './user-nav';

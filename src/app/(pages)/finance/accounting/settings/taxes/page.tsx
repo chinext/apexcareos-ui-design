@@ -1,12 +1,3 @@
-import { PageHeader } from '@/components/page-header';
+import AccountingSettingsTaxesPage from '@/pages/finance/accounting/settings/taxes/page';
 
-export default function AccountingSettingsTaxesPage() {
-  return (
-    <main className="flex-1 space-y-6 p-4 md:p-6">
-      <PageHeader title="Accounting Settings - Taxes" />
-      <p className="text-muted-foreground">
-        This is the placeholder for the Accounting Settings - Taxes page.
-      </p>
-    </main>
-  );
-}
+export default AccountingSettingsTaxesPage;

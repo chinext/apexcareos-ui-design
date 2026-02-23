@@ -1,10 +1,3 @@
-export default function ProfilePage() {
-  return (
-    <main className="flex-1 space-y-6 p-4 md:p-6">
-      <h1 className="text-2xl font-bold tracking-tight md:text-3xl">Profile</h1>
-      <p className="text-muted-foreground">
-        This is the placeholder for the Profile page.
-      </p>
-    </main>
-  );
-}
+import ProfilePage from '@/pages/settings/system/profile/page';
+
+export default ProfilePage;
