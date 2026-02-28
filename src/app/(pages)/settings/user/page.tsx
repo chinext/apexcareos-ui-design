@@ -212,7 +212,7 @@ export default function UserSettingsPage() {
                 </Select>
               </div>
             </section>
-          </div >
+          </TabsContent>
         </div>
       </Tabs>
     </main>
