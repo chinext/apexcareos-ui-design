@@ -168,7 +168,7 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
           </Button>
           <Button
             variant="outline"
-            className="w-full max-w-sm justify-start gap-2 rounded-lg text-muted-foreground"
+            className="w-full max-w-lg justify-start gap-2 rounded-lg text-muted-foreground"
             onClick={() => setOpenSearch(true)}
           >
             <Search className="h-4 w-4" />
@@ -178,7 +178,7 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
         </div>
         <div className="flex items-center gap-1">
           <Link href="/summarize" passHref>
-            <Button className="bg-gradient-to-r from-primary to-teal-500 text-white">
+            <Button className="hidden lg:flex bg-gradient-to-r from-primary to-teal-500 text-white">
               <Sparkles className="mr-2 h-4 w-4" />
               AI Assistance
             </Button>
