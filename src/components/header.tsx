@@ -2,7 +2,6 @@
 import {
   Bell,
   CalendarDays,
-  Languages,
   Mail,
   Moon,
   Sun,
@@ -17,6 +16,13 @@ import {
   FileArchive,
   FileText,
   CornerDownLeft,
+  LayoutGrid,
+  ClipboardCheck,
+  Briefcase,
+  FolderOpen,
+  StickyNote,
+  Users,
+  MessageSquare,
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { UserNav } from './user-nav';
@@ -103,6 +109,15 @@ const recentSearches = [
   },
 ];
 
+const shortcuts = [
+  { label: 'Tasks', icon: ClipboardCheck, href: '/settings/task', color: 'text-blue-600', bgColor: 'bg-blue-50' },
+  { label: 'Projects', icon: Briefcase, href: '/settings/project', color: 'text-indigo-600', bgColor: 'bg-indigo-50' },
+  { label: 'Files', icon: FolderOpen, href: '#', color: 'text-amber-600', bgColor: 'bg-amber-50' },
+  { label: 'Memo', icon: StickyNote, href: '/settings/memo', color: 'text-green-600', bgColor: 'bg-green-50' },
+  { label: 'Teams', icon: Users, href: '#', color: 'text-purple-600', bgColor: 'bg-purple-50' },
+  { label: 'Chats', icon: MessageSquare, href: '#', color: 'text-pink-600', bgColor: 'bg-pink-50' },
+];
+
 export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
   const [theme, setTheme] = useState('light');
   const [isClient, setIsClient] = useState(false);
@@ -178,14 +193,25 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon" className="rounded-full">
-                <Languages className="h-5 w-5" />
-                <span className="sr-only">Language</span>
+                <LayoutGrid className="h-5 w-5" />
+                <span className="sr-only">Apps</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>English</DropdownMenuItem>
-              <DropdownMenuItem>Spanish</DropdownMenuItem>
-              <DropdownMenuItem>French</DropdownMenuItem>
+            <DropdownMenuContent align="end" className="w-80 p-4">
+              <div className="grid grid-cols-3 gap-4">
+                {shortcuts.map((item) => (
+                  <Link 
+                    key={item.label} 
+                    href={item.href}
+                    className="flex flex-col items-center justify-center gap-2 rounded-lg p-2 transition-colors hover:bg-muted"
+                  >
+                    <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg", item.bgColor)}>
+                      <item.icon className={cn("h-5 w-5", item.color)} />
+                    </div>
+                    <span className="text-xs font-medium text-foreground">{item.label}</span>
+                  </Link>
+                ))}
+              </div>
             </DropdownMenuContent>
           </DropdownMenu>
 
