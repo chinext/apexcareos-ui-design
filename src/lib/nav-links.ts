@@ -34,6 +34,10 @@ import {
   ClipboardList,
   TestTube,
   Cable,
+  Banknote,
+  HandCoins,
+  Gauge,
+  UserSearch,
 } from 'lucide-react';
 
 export interface SubLink {
@@ -286,6 +290,36 @@ export const navGroups: NavGroup[] = [
         href: '/hr/schedule',
         icon: CalendarDays,
         iconBgColor: 'bg-amber-500',
+      },
+      {
+        label: 'Payroll',
+        href: '/hr/payroll',
+        icon: Banknote,
+        iconBgColor: 'bg-emerald-500',
+      },
+      {
+        label: 'Loan',
+        href: '/hr/loan',
+        icon: HandCoins,
+        iconBgColor: 'bg-blue-500',
+      },
+      {
+        label: 'Performance',
+        href: '/hr/performance',
+        icon: Gauge,
+        iconBgColor: 'bg-indigo-500',
+      },
+      {
+        label: 'Recruitment',
+        href: '/hr/recruitment',
+        icon: UserSearch,
+        iconBgColor: 'bg-purple-500',
+      },
+      {
+        label: 'Policies & Doc',
+        href: '/hr/policies',
+        icon: FileText,
+        iconBgColor: 'bg-slate-500',
       },
     ],
   },
